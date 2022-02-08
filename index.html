@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tela de Caixa</title>
+    <link href="./coreui-4.1.0-dist/css/coreui.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/@coreui/coreui/dist/css/coreui.min.css" />
+    <link rel="stylesheet" href="./fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+    <div class="col" id="header">
+        <header class="header">
+            <button class="header-toggler" type="button">
+                <span class="header-toggler-icon"></span>
+            </button>
+            <ul class="header-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="visually-hidden">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="headerDropdown" role="button"
+                        data-coreui-toggle="dropdown" aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="headerDropdown">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                </li>
+            </ul>
+            <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+                <button class="btn btn-outline-success" type="submit">
+                    Search
+                </button>
+            </form>
+        </header>
+    </div>
+    </div>
+    <div class="container" id="main-container">
+        <div class="row" id="container-row">
+            <div class="col-md-9" id="pesquisa-listagem-col">
+                <div class="col" id="pesquisa-area">
+                    <div class="input-group mb3" id="input-pesquisa-area">
+                        <input type="text" class="form-control" placeholder="Pesquisar item"
+                            aria-describedby="button-search">
+                        <span class="input-group-text" id="button-search"><i class="fas fa-search"></i></span>
+                    </div>
+                    <button class="btn btn-danger">Cancelar - F7</button>
+                </div>
+                <div class="col" id="listagem-area">
+                    Listagem
+                </div>
+            </div>
+            <div class="col-md-3" id="informacao-compra-area">
+                <div class="row gy-2">
+                    <div class="col-12">
+                        <label>Código do Produto</label>
+                        <input type="text" class="form-control input-compra">
+                    </div>
+                    <div class="col-12">
+                        <label>Produto</label>
+                        <input type="text" class="form-control input-compra">
+                    </div>
+                    <div class="col-6">
+                        <label>Valor Unitário</label>
+                        <input type="text" class="form-control input-compra">
+                    </div>
+                    <div class="col-6">
+                        <label>Quantidade</label>
+                        <input type="text" class="form-control input-compra">
+                    </div>
+                    <div class="col-12">
+                        <label>Desconto</label>
+                        <input type="text" class="form-control input-compra">
+                    </div>
+                    <div class="col-12">
+                        <input type="checkbox" class="form-check-input" id="checkbox-troca-produto">
+                        <label class="form-check-label" for="checkbox-troca-produto">
+                            Troca de Produto
+                        </label>
+                    </div>
+                    <div class="col-12">
+                        <button class="btn btn-primary" id="botao-adicionar-produto">Adicionar Produto</button>
+                    </div>
+                </div>
+                <div class="row" id="informacoes-valores-area">
+                    <div class="col-12 informacao-valores-area">
+                        <h5 class="informacao-valores descricao-valores">
+                            SubTotal
+                        </h5>
+                        <h5 class="informacao-valores valor">
+                            R$ 40,00
+                        </h5>
+                    </div>
+                    <div class="col-12 informacao-valores-area">
+                        <h5 class="informacao-valores descricao-valores">
+                            Acrécimo
+                        </h5>
+                        <h5 class="informacao-valores valor">
+                            + R$ 10,00
+                        </h5>
+                    </div>
+                    <div class="col-12 informacao-valores-area">
+                        <h5 class="informacao-valores descricao-valores">
+                            Descontos
+                        </h5>
+                        <h5 class="informacao-valores valor">
+                            - R$ 4,00
+                        </h5>
+                    </div>
+                    <div class="col-12 informacao-valores-area">
+                        <h5 class="informacao-valores descricao-valores total">
+                            Total
+                        </h5>
+                        <h5 class="informacao-valores valor">
+                            R$ 36,00
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./coreui-4.1.0-dist/js/coreui.bundle.min.js"></script>
+    <script src="./mains.js"></script>
+</body>
+
+</html>
