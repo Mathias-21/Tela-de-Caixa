@@ -26,15 +26,12 @@ const descontoProdutoInput = document.querySelector("#desconto-produto-input");
 const botaoAdicionarProduto = document.querySelector(
   "#botao-adicionar-produto"
 );
-
-var subtotalTotal = data.reduce((acumulador, valorAtual, index, array) => {
-  return acumulador + valorAtual.PRECO_PRODUTO;
-}, 0);
+const subtotal = document.querySelector("#subtotal");
+const descontos = document.querySelector("#descontos");
+const total = document.querySelector("#total");
 
 const cancelarCompra = () => {
-  console.log(data);
   data.splice(0, data.length);
-  console.log(olamundo);
   corpoTabela.innerHTML = data;
 };
 
@@ -47,6 +44,10 @@ document.addEventListener("keydown", (event) => {
 
 botaoCancelarCompra.addEventListener("click", () => cancelarCompra());
 
+function deleteProduct(id) {
+  console.log(id.replace("produto", ""));
+}
+
 var olamundo = "";
 const adicionarProdutoTabela = () => {
   data.forEach((value) => {
@@ -55,16 +56,31 @@ const adicionarProdutoTabela = () => {
       value.ID_PRODUTO +
       "</th><td class='nome-produto'>" +
       value.NOME_PRODUTO +
-      "</td><td class='preco-produto'>R$" +
+      "</td><td class='preco-produto'>" +
       value.PRECO_PRODUTO +
-      ",00</td><td class='qtde-produto'>" +
+      "</td><td class='qtde-produto'>" +
       value.QTDE_PRODUTO +
-      "</td><td class='desconto-protuto'>R$" +
+      "</td><td class='desconto-protuto'>" +
       value.DESCONTO_PRODUTO +
-      ",00</td><td class='subtotal-produto'>R$" +
+      "</td><td class='subtotal-produto'>" +
       value.SUBTOTAL_PRODUTO +
-      ",00</td><td class='delete-icon'><i class='fas fa-trash'></i></td></tr>";
+      "</td><td class='delete-icon' onclick='deleteProduct(this.id)' id='produto" +
+      data.length +
+      "'><i class='fas fa-trash'></i></td></tr>";
   });
+};
+
+const produtoEspec = document.querySelector(".delete-icon");
+for (let value = 0; value < data.length; value++) {
+  produtoEspec.addEventListener("click", () => {
+    alert("a");
+    apagarProduto(value);
+  });
+}
+
+const apagarProduto = (ID_PRODUTO) => {
+  data.splice(ID_PRODUTO, 1);
+  console.log(data);
 };
 
 botaoAdicionarProduto.addEventListener("click", () => {
@@ -78,14 +94,37 @@ botaoAdicionarProduto.addEventListener("click", () => {
     let newData = {
       ID_PRODUTO: codProdutoInput.value,
       NOME_PRODUTO: nomeProdutoInput.value,
-      PRECO_PRODUTO: precoProdutoInput.value,
+      PRECO_PRODUTO: Intl.NumberFormat("pt-br", {
+        style: "currency",
+        currency: "BRL",
+      }).format(Number(precoProdutoInput.value)),
       QTDE_PRODUTO: qtdeProdutoInput.value,
-      DESCONTO_PRODUTO: descontoProdutoInput.value,
-      SUBTOTAL_PRODUTO:
-        precoProdutoInput.value * qtdeProdutoInput.value -
-        descontoProdutoInput.value * qtdeProdutoInput.value,
+      DESCONTO_PRODUTO: Intl.NumberFormat("pt-br", {
+        style: "currency",
+        currency: "BRL",
+      }).format(Number(descontoProdutoInput.value)),
+      SUBTOTAL_PRODUTO: Intl.NumberFormat("pt-br", {
+        style: "currency",
+        currency: "BRL",
+      }).format(
+        Number(
+          precoProdutoInput.value * qtdeProdutoInput.value -
+            descontoProdutoInput.value * qtdeProdutoInput.value
+        )
+      ),
     };
     data.push(newData);
+    var subtotalTotal = data.reduce(getSubtotal, 0);
+    function getSubtotal(total, item) {
+      return total + item.PRECO_PRODUTO * item.QTDE_PRODUTO;
+    }
+    var descontosTotal = data.reduce(getDescontos, 0);
+    function getDescontos(total, item) {
+      return total + item.DESCONTO_PRODUTO * item.QTDE_PRODUTO;
+    }
+    subtotal.innerHTML = `R$ ${subtotalTotal},00`;
+    descontos.innerHTML = `R$ ${descontosTotal},00`;
+    total.innerHTML = `R$ ${subtotalTotal - descontosTotal},00`;
     adicionarProdutoTabela();
     corpoTabela.innerHTML += olamundo;
 
@@ -95,7 +134,6 @@ botaoAdicionarProduto.addEventListener("click", () => {
     qtdeProdutoInput.value = "";
     descontoProdutoInput.value = "";
     codProdutoInput.focus();
-    console.log(subtotalTotal);
   } else {
     alert("Por favor, coloque os dados abaixo");
   }
