@@ -25,10 +25,31 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">Link</a>
                 </li>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="headerDropdown" role="button"
                         data-coreui-toggle="dropdown" aria-expanded="false">
-                        Dropdown
+                        Vendedor
+                    </a>
+                    <div class="dropdown-menu" id="dropdown-menu-vendedores" aria-labelledby="headerDropdown">
+                        <div id="dropdown-vendedores" class="dropdown-content">
+                            <input type="text" class="form-control" placeholder="Pesquisar Vendedor..." id="input-search-vendedores" onkeyup="filtrarVendedores()">
+                            <p class="vendedores" id="vendedor1">Fábio</p>
+                            <p class="vendedores" id="vendedor2">Pedro</p>
+                            <p class="vendedores" id="vendedor3">Antônio</p>
+                            <p class="vendedores" id="vendedor4">Lucas</p>
+                            <p class="vendedores" id="vendedor5">Sérgio</p>
+                            <p class="vendedores" id="vendedor6">Marcelo</p>
+                            <p class="vendedores" id="vendedor7">Jonas</p>
+                            <p class="vendedores" id="vendedor8">Davi</p>
+                            <p class="vendedores" id="vendedor9">Thiago</p>
+                            <p class="vendedores" id="vendedor10">Jõao Arthur</p>
+                        </div>
+                    </div>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="headerDropdown" role="button"
+                        data-coreui-toggle="dropdown" aria-expanded="false">
+                        Cliente
                     </a>
                     <div class="dropdown-menu" aria-labelledby="headerDropdown">
                         <a class="dropdown-item" href="#">Action</a>
@@ -52,33 +73,6 @@
     </div>
     <div class="container" id="main-container">
         <div class="row" id="container-row">
-            <div class="col-md-9" id="pesquisa-listagem-col">
-                <div class="col" id="pesquisa-area">
-                    <div class="input-group mb3" id="input-pesquisa-area">
-                        <input type="text" class="form-control" placeholder="Pesquisar item"
-                            aria-describedby="button-search">
-                        <span class="input-group-text" id="button-search"><i class="fas fa-search"></i></span>
-                    </div>
-                    <button class="btn btn-danger" id="botao-cancelar-compra">Cancelar - F7</button>
-                </div>
-                <div class="col" id="listagem-area">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Produto</th>
-                                <th scope="col">Preço</th>
-                                <th scope="col">Qtde</th>
-                                <th scope="col">Desconto Acrécimo</th>
-                                <th scope="col">Subtotal</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody id="corpo-tabela">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
             <div class="col-md-3" id="informacao-compra-area">
                 <div class="row gy-2">
                     <div class="col-12">
@@ -98,7 +92,7 @@
                         <input type=" text" id="qtde-produto-input" class=" form-control input-compra">
                     </div>
                     <div class="col-12">
-                        <label class="label-input" nput">Desco nto</label>
+                        <label class="label-input" nput">Desconto</label>
                         <input type="text" id="desconto-produto-input" class=" form-control input-compra">
                     </div>
                     <div class="col-12">
@@ -117,7 +111,7 @@
                             SubTotal
                         </h5>
                         <h5 class="informacao-valores valor" id="subtotal">
-                            
+
                         </h5>
                     </div>
                     <div class="col-12 informacao-valores-area">
@@ -125,7 +119,7 @@
                             Acrécimo
                         </h5>
                         <h5 class="informacao-valores valor" id="acrecimo">
-                            
+
                         </h5>
                     </div>
                     <div class="col-12 informacao-valores-area">
@@ -133,7 +127,7 @@
                             Descontos
                         </h5>
                         <h5 class="informacao-valores valor" id="descontos">
-                            
+
                         </h5>
                     </div>
                     <div class="col-12 informacao-valores-area">
@@ -141,9 +135,36 @@
                             Total
                         </h5>
                         <h5 class="informacao-valores valor" id="total">
-                            
+
                         </h5>
                     </div>
+                </div>
+            </div>
+            <div class="col-md-9" id="pesquisa-listagem-col">
+                <div class="col" id="pesquisa-area">
+                    <div class="input-group mb3" id="input-pesquisa-area">
+                        <input type="text" class="form-control" placeholder="Pesquisar item"
+                            aria-describedby="button-search">
+                        <span class="input-group-text" id="button-search"><i class="fas fa-search"></i></span>
+                    </div>
+                    <button class="btn btn-danger" id="botao-cancelar-compra">Cancelar - Alt + 5</button>
+                </div>
+                <div class="col" id="listagem-area">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Produto</th>
+                                <th scope="col">Preço</th>
+                                <th scope="col">Qtde</th>
+                                <th scope="col">Desconto Acrécimo</th>
+                                <th scope="col">Subtotal</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpo-tabela">
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

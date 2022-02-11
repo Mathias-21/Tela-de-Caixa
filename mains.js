@@ -36,9 +36,9 @@ const cancelarCompra = () => {
 };
 
 document.addEventListener("keydown", (event) => {
-  const keyName = event.key;
-  if (keyName === "F7") {
-    cancelarCompra();
+  const keyCode = event.keyCode;
+  if (keyCode === 53) {
+    if (event.altKey) cancelarCompra();
   }
 });
 
@@ -138,3 +138,61 @@ botaoAdicionarProduto.addEventListener("click", () => {
     alert("Por favor, coloque os dados abaixo");
   }
 });
+
+function filtrarVendedores() {
+  let inputVendedores = document.querySelector("#input-search-vendedores");
+
+  let inputVendedoresValue = inputVendedores.value.toUpperCase();
+
+  let p = document.getElementsByTagName("p");
+
+  for (let i = 0; i < p.length; i++) {
+    txtP = p[i].textContent;
+
+    if (txtP.toUpperCase().indexOf(inputVendedoresValue) > -1) {
+      p[i].style.display = "";
+    } else {
+      p[i].style.display = "none";
+    }
+  }
+}
+
+let vendedores = document.querySelectorAll("#dropdown-vendedores > p");
+let headerDropdown = document.querySelector("#headerDropdown");
+
+console.log(vendedores);
+
+// dropdownVendedores.vendedor1.addEventListener("click", () => {
+//   headerDropdown.innerHTML = vendedor1.textContent;
+// });
+// vendedor2.addEventListener("click", () => {
+//   headerDropdown.innerHTML = vendedor2.textContent;
+// });
+// vendedor3.addEventListener("click", () => {
+//   headerDropdown.innerHTML = vendedor3.textContent;
+// });
+// vendedor4.addEventListener("click", () => {
+//   headerDropdown.innerHTML = vendedor4.textContent;
+// });
+// vendedor5.addEventListener("click", () => {
+//   headerDropdown.innerHTML = vendedor5.textContent;
+// });
+// vendedor6.addEventListener("click", () => {
+//   headerDropdown.innerHTML = vendedor6.textContent;
+// });
+// vendedor7.addEventListener("click", () => {
+//   headerDropdown.innerHTML = vendedor7.textContent;
+// });
+// vendedor8.addEventListener("click", () => {
+//   headerDropdown.innerHTML = vendedor8.textContent;
+// });
+// vendedor9.addEventListener("click", () => {
+//   headerDropdown.innerHTML = vendedor9.textContent;
+// });
+// vendedor10.addEventListener("click", () => {
+//   headerDropdown.innerHTML = vendedor10.textContent;
+// });
+
+// () => {
+//   vendedor;
+// };

@@ -6,6 +6,46 @@ body {
   padding-left: 0;
 }
 
+.dropdown-menu {
+  width: 250px;
+  max-height: 600px;
+  transition: 0.15s;
+}
+
+.dropdown-menu.show {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#dropdown-vendedores {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+#input-search-vendedores {
+  border: 0;
+  border-radius: 0;
+  border-bottom: 1px solid #b1b7c1;
+}
+
+#input-search-vendedores:focus {
+  box-shadow: 0 0 0 0 transparent;
+}
+
+.vendedores {
+  cursor: pointer;
+  text-align: center;
+  margin-bottom: 0;
+  padding: 0.5rem;
+  /* border-bottom: 1px solid #222; */
+}
+
+.vendedores:hover {
+  background-color: #00000015;
+}
+
 #main-container {
   width: 100%;
   max-width: 100vw;
@@ -27,7 +67,7 @@ body {
   justify-content: space-between;
   padding: 1rem;
   background-color: #fff;
-  margin-right: 1rem;
+  margin-left: 1rem;
   box-shadow: 0 0 5px #0002;
   border-radius: 5px;
 }
@@ -57,7 +97,7 @@ body {
   background-color: #fff;
   box-shadow: 0 0 5px #0002;
   border-radius: 5px;
-  margin: 1rem 1rem 0 0;
+  margin: 1rem 0 0 1rem;
   padding: 1rem;
 }
 
