@@ -6,9 +6,32 @@ body {
   padding-left: 0;
 }
 
+#header-dropdown-vendedores {
+  min-width: 120px;
+  text-align: center;
+}
+
+.nav-link.dropdown-toggle.show {
+  background-color: #dfdfdf;
+  color: #000;
+}
+
+#header-dropdown-clientes {
+  width: 120px;
+  text-align: center;
+}
+
+#header-dropdown-clientes:hover {
+  background-color: #dfdfdf;
+}
+
+#header-dropdown-vendedores:hover {
+  background-color: #dfdfdf;
+}
+
 .dropdown-menu {
   width: 250px;
-  max-height: 600px;
+  max-height: 500px;
   transition: 0.15s;
 }
 

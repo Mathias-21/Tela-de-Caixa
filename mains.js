@@ -116,15 +116,32 @@ botaoAdicionarProduto.addEventListener("click", () => {
     data.push(newData);
     var subtotalTotal = data.reduce(getSubtotal, 0);
     function getSubtotal(total, item) {
-      return total + item.PRECO_PRODUTO * item.QTDE_PRODUTO;
+      return (
+        total +
+        item.PRECO_PRODUTO.replace("R$", "").replace(",", ".") *
+          item.QTDE_PRODUTO.replace("R$", "").replace(",", ".")
+      );
     }
     var descontosTotal = data.reduce(getDescontos, 0);
     function getDescontos(total, item) {
-      return total + item.DESCONTO_PRODUTO * item.QTDE_PRODUTO;
+      return (
+        total +
+        item.DESCONTO_PRODUTO.replace("R$", "").replace(",", ".") *
+          item.QTDE_PRODUTO.replace("R$", "").replace(",", ".")
+      );
     }
-    subtotal.innerHTML = `R$ ${subtotalTotal},00`;
-    descontos.innerHTML = `R$ ${descontosTotal},00`;
-    total.innerHTML = `R$ ${subtotalTotal - descontosTotal},00`;
+    subtotal.innerHTML = Intl.NumberFormat("pt-br", {
+      style: "currency",
+      currency: "BRL",
+    }).format(Number(subtotalTotal));
+    descontos.innerHTML = Intl.NumberFormat("pt-br", {
+      style: "currency",
+      currency: "BRL",
+    }).format(Number(descontosTotal));
+    total.innerHTML = Intl.NumberFormat("pt-br", {
+      style: "currency",
+      currency: "BRL",
+    }).format(Number(subtotalTotal - descontosTotal));
     adicionarProdutoTabela();
     corpoTabela.innerHTML += olamundo;
 
@@ -141,14 +158,10 @@ botaoAdicionarProduto.addEventListener("click", () => {
 
 function filtrarVendedores() {
   let inputVendedores = document.querySelector("#input-search-vendedores");
-
   let inputVendedoresValue = inputVendedores.value.toUpperCase();
-
   let p = document.getElementsByTagName("p");
-
   for (let i = 0; i < p.length; i++) {
     txtP = p[i].textContent;
-
     if (txtP.toUpperCase().indexOf(inputVendedoresValue) > -1) {
       p[i].style.display = "";
     } else {
@@ -158,41 +171,12 @@ function filtrarVendedores() {
 }
 
 let vendedores = document.querySelectorAll("#dropdown-vendedores > p");
-let headerDropdown = document.querySelector("#headerDropdown");
+let headerDropdownVendedores = document.querySelector(
+  "#header-dropdown-vendedores"
+);
 
-console.log(vendedores);
-
-// dropdownVendedores.vendedor1.addEventListener("click", () => {
-//   headerDropdown.innerHTML = vendedor1.textContent;
-// });
-// vendedor2.addEventListener("click", () => {
-//   headerDropdown.innerHTML = vendedor2.textContent;
-// });
-// vendedor3.addEventListener("click", () => {
-//   headerDropdown.innerHTML = vendedor3.textContent;
-// });
-// vendedor4.addEventListener("click", () => {
-//   headerDropdown.innerHTML = vendedor4.textContent;
-// });
-// vendedor5.addEventListener("click", () => {
-//   headerDropdown.innerHTML = vendedor5.textContent;
-// });
-// vendedor6.addEventListener("click", () => {
-//   headerDropdown.innerHTML = vendedor6.textContent;
-// });
-// vendedor7.addEventListener("click", () => {
-//   headerDropdown.innerHTML = vendedor7.textContent;
-// });
-// vendedor8.addEventListener("click", () => {
-//   headerDropdown.innerHTML = vendedor8.textContent;
-// });
-// vendedor9.addEventListener("click", () => {
-//   headerDropdown.innerHTML = vendedor9.textContent;
-// });
-// vendedor10.addEventListener("click", () => {
-//   headerDropdown.innerHTML = vendedor10.textContent;
-// });
-
-// () => {
-//   vendedor;
-// };
+for (let i = 0; i < vendedores.length; i++) {
+  vendedores[i].addEventListener("click", () => {
+    headerDropdownVendedores.innerHTML = vendedores[i].textContent;
+  });
+}
