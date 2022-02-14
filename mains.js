@@ -167,7 +167,7 @@ headerDropdownVendedores.addEventListener("click", () => {
 
 function filtrarVendedores() {
   let inputVendedoresValue = inputVendedores.value.toUpperCase();
-  let p = document.getElementsByTagName("p");
+  let p = document.querySelectorAll(".vendedores");
   for (let i = 0; i < p.length; i++) {
     txtP = p[i].textContent;
     if (txtP.toUpperCase().indexOf(inputVendedoresValue) > -1) {
@@ -185,3 +185,54 @@ for (let i = 0; i < vendedores.length; i++) {
     headerDropdownVendedores.innerHTML = vendedores[i].textContent;
   });
 }
+
+let inputClientes = document.querySelector("#input-search-clientes");
+
+let headerDropdownClientes = document.querySelector(
+  "#header-dropdown-clientes"
+);
+
+headerDropdownClientes.addEventListener("click", () => {
+  inputClientes.focus();
+});
+
+function filtrarClientes() {
+  let inputClientesValue = inputClientes.value.toUpperCase();
+  let p = document.querySelectorAll(".clientes");
+  for (let i = 0; i < p.length; i++) {
+    txtP = p[i].textContent;
+    if (txtP.toUpperCase().indexOf(inputClientesValue) > -1) {
+      p[i].style.display = "";
+    } else {
+      p[i].style.display = "none";
+    }
+  }
+}
+
+let clientes = document.querySelectorAll("#dropdown-clientes > p");
+
+for (let i = 0; i < clientes.length; i++) {
+  clientes[i].addEventListener("click", () => {
+    headerDropdownClientes.innerHTML = clientes[i].textContent;
+    // inputClientes.value = clientes[i].textContent;
+    inputClientes.value = "";
+  });
+}
+
+const btnEscolherCliente = document.querySelector("#btn-escolher-cliente");
+const dropdownMenuClientes = document.querySelector("#dropdown-menu-clientes");
+
+const escolherCliente = () => {
+  headerDropdownClientes.classList.toggle("show");
+  dropdownMenuClientes.classList.toggle("show");
+  inputClientes.focus();
+};
+
+document.addEventListener("keydown", (event) => {
+  const keyCode = event.keyCode;
+  if (keyCode === 52) {
+    if (event.altKey) escolherCliente();
+  }
+});
+
+btnEscolherCliente.addEventListener("click", () => escolherCliente());

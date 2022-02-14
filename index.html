@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link href="./coreui-4.1.0-dist/css/coreui.min.css" rel="stylesheet" />
-        <link rel="stylesheet" href="https://unpkg.com/@coreui/coreui/dist/css/coreui.min.css" />
-        <link rel="stylesheet" href="./fontawesome-free/css/all.min.css" />
-        <link rel="stylesheet" href="./style.css" />
-        <title>Tela de Caixa</title>
-    </head>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="./coreui-4.1.0-dist/css/coreui.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/@coreui/coreui/dist/css/coreui.min.css" />
+    <link rel="stylesheet" href="./fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet" href="./style.css" />
+    <title>Tela de Caixa</title>
+</head>
+
 <body>
     <div class="col" id="header">
         <header class="header">
@@ -21,7 +23,9 @@
                     </a>
                     <div class="dropdown-menu" id="dropdown-menu-vendedores" aria-labelledby="headerDropdown">
                         <div id="dropdown-vendedores" class="dropdown-content">
-                            <input type="text" class="form-control" autocomplete="additional-name" placeholder="Pesquisar Vendedor..." id="input-search-vendedores" onkeyup="filtrarVendedores()">
+                            <input type="text" class="form-control" autocomplete="additional-name"
+                                placeholder="Pesquisar Vendedor..." id="input-search-vendedores"
+                                onkeyup="filtrarVendedores()">
                             <p class="vendedores" id="vendedor1">Fábio</p>
                             <p class="vendedores" id="vendedor2">Pedro</p>
                             <p class="vendedores" id="vendedor3">Antônio</p>
@@ -40,11 +44,15 @@
                         data-coreui-toggle="dropdown" aria-expanded="false">
                         Cliente
                     </a>
-                    <div class="dropdown-menu" aria-labelledby="headerDropdown">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
+                    <div class="dropdown-menu" id="dropdown-menu-clientes" aria-labelledby="headerDropdown">
+                        <div id="dropdown-clientes" class="dropdown-content">
+                            <input type="text" class="form-control" autocomplete="additional-name"
+                                placeholder="Pesquisar Cliente..." id="input-search-clientes"
+                                onkeyup="filtrarClientes()">
+                            <p class="clientes" id="clientes1">Consumidor</p>
+                            <p class="clientes" id="clientes2">Fornecedor</p>
+                            <p class="clientes" id="clientes3">Ambos</p>
+                        </div>
                     </div>
                 </li>
             </ul>
@@ -59,19 +67,19 @@
                         <input type="text" id="cod-produto-input" class="form-control input-compra">
                     </div>
                     <div class="col-12">
-                        <label class="label-input" " >Produto</label>
+                        <label class="label-input">Produto</label>
                         <input type=" text" id="nome-produto-input" class=" form-control input-compra">
                     </div>
                     <div class="col-6">
-                        <label class="label-input" t">Valor Unitário</label>
+                        <label class="label-input">Valor Unitário</label>
                         <input type="text" id="preco-produto-input" class=" form-control input-compra">
                     </div>
                     <div class="col-6">
-                        <label class="label-input" ">Quantidade</label>
+                        <label class="label-input">Quantidade</label>
                         <input type=" text" id="qtde-produto-input" class=" form-control input-compra">
                     </div>
                     <div class="col-12">
-                        <label class="label-input" nput">Desconto</label>
+                        <label class="label-input">Desconto</label>
                         <input type="text" id="desconto-produto-input" class=" form-control input-compra">
                     </div>
                     <div class="col-12">
@@ -146,19 +154,19 @@
                     </table>
                 </div>
                 <div class="col" id="butoes-funcoes-area">
-                    <button class="btn btn-primary botoes-funcoes">Ativar e Desativar Troca de Produto - Alt + 2</button>
-                    <button class="btn btn-primary botoes-funcoes">Alterar o Ítem (Qtde e/ou Valor) - Alt +3</button>
-                    <button class="btn btn-primary botoes-funcoes"> Escolher Cliente - Alt + 4</button>
-                    <button class="btn btn-primary botoes-funcoes">Adicionar/Remover Indicador - Alt + 6</button>
-                    <button class="btn btn-primary botoes-funcoes">Alterar o Tipo da Venda - Alt + 7</button>
-                    <button class="btn btn-primary botoes-funcoes">Retirar Item da Venda - Alt + 8</button>
-                    <button class="btn btn-primary botoes-funcoes">Descontos e Acrécimos - Alt + 9</button>
-                    <button class="btn btn-primary botoes-funcoes">Finalzar Venda - Alt + 10</button>
+                    <button class="btn btn-primary botoes-funcoes">Ativar/Desativar Troca de Prod. <br> Alt + 2</button>
+                    <button class="btn btn-primary botoes-funcoes">Alterar Item (Qtde e/ou Valor) <br> Alt +3</button>
+                    <button class="btn btn-primary botoes-funcoes" id="btn-escolher-cliente">Escolher Cliente <br> Alt + 4</button>
+                    <button class="btn btn-primary botoes-funcoes">Adicionar/Remover Indicador <br> Alt + 6</button>
+                    <button class="btn btn-primary botoes-funcoes">Alterar o Tipo da Venda <br> Alt + 7</button>
+                    <button class="btn btn-primary botoes-funcoes">Retirar Item da Venda <br> Alt + 8</button>
+                    <button class="btn btn-primary botoes-funcoes">Descontos e Acrécimos <br> Alt + 9</button>
+                    <button class="btn btn-primary botoes-funcoes">Finalzar Venda <br> Alt + 10</button>
+                </div>
             </div>
         </div>
-    </div>
-    <script src="./coreui-4.1.0-dist/js/coreui.bundle.min.js"></script>
-    <script src="./mains.js"></script>
+        <script src="./coreui-4.1.0-dist/js/coreui.bundle.min.js"></script>
+        <script src="./mains.js"></script>
 </body>
 
 </html>
