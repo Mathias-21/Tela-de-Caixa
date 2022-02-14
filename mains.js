@@ -156,8 +156,16 @@ botaoAdicionarProduto.addEventListener("click", () => {
   }
 });
 
+let headerDropdownVendedores = document.querySelector(
+  "#header-dropdown-vendedores"
+);
+let inputVendedores = document.querySelector("#input-search-vendedores");
+
+headerDropdownVendedores.addEventListener("click", () => {
+  inputVendedores.focus();
+});
+
 function filtrarVendedores() {
-  let inputVendedores = document.querySelector("#input-search-vendedores");
   let inputVendedoresValue = inputVendedores.value.toUpperCase();
   let p = document.getElementsByTagName("p");
   for (let i = 0; i < p.length; i++) {
@@ -171,9 +179,6 @@ function filtrarVendedores() {
 }
 
 let vendedores = document.querySelectorAll("#dropdown-vendedores > p");
-let headerDropdownVendedores = document.querySelector(
-  "#header-dropdown-vendedores"
-);
 
 for (let i = 0; i < vendedores.length; i++) {
   vendedores[i].addEventListener("click", () => {
