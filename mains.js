@@ -44,46 +44,44 @@ document.addEventListener("keydown", (event) => {
 
 botaoCancelarCompra.addEventListener("click", () => cancelarCompra());
 
-function deleteProduct(id) {
-  console.log(id.replace("produto", ""));
+function apagarProduto(id) {
+  const numProduct = id.replace("produto", "");
+  data.splice(numProduct, 1);
+  corpoTabela.innerHTML = montarTabela();
 }
 
-var olamundo = "";
-const adicionarProdutoTabela = () => {
-  data.forEach((value) => {
-    olamundo =
-      "<tr><th scope='row' class='numero-produto'>" +
-      value.ID_PRODUTO +
-      "</th><td class='nome-produto'>" +
-      value.NOME_PRODUTO +
-      "</td><td class='preco-produto'>" +
-      value.PRECO_PRODUTO +
-      "</td><td class='qtde-produto'>" +
-      value.QTDE_PRODUTO +
-      "</td><td class='desconto-protuto'>" +
-      value.DESCONTO_PRODUTO +
-      "</td><td class='subtotal-produto'>" +
-      value.SUBTOTAL_PRODUTO +
-      "</td><td class='delete-icon' onclick='deleteProduct(this.id)' id='produto" +
-      data.length +
-      "'><i class='fas fa-trash'></i></td></tr>";
+const montarTabela = () => {
+  var tabela = "";
+  data.forEach((value, index) => {
+    tabela += `
+    <tr>
+      <th scope='row' class='numero-produto'>
+        ${value.ID_PRODUTO}
+      </th>
+      <td class='nome-produto'> 
+        ${value.NOME_PRODUTO}
+      </td>
+      <td class='preco-produto'> 
+        ${value.PRECO_PRODUTO}
+      </td>
+      <td class='qtde-produto'> 
+        ${value.QTDE_PRODUTO}
+      </td>
+      <td class='desconto-protuto'> 
+        ${value.DESCONTO_PRODUTO}
+      </td>
+      <td class='subtotal-produto'> 
+        ${value.SUBTOTAL_PRODUTO} 
+      </td>
+      <td class='delete-icon' onclick='apagarProduto(this.id)' id='produto${index}'>
+        <i class='fas fa-trash'/>
+      </td>
+    </tr>`;
   });
+  return tabela;
 };
 
-const produtoEspec = document.querySelector(".delete-icon");
-for (let value = 0; value < data.length; value++) {
-  produtoEspec.addEventListener("click", () => {
-    alert("a");
-    apagarProduto(value);
-  });
-}
-
-const apagarProduto = (ID_PRODUTO) => {
-  data.splice(ID_PRODUTO, 1);
-  console.log(data);
-};
-
-botaoAdicionarProduto.addEventListener("click", () => {
+const adicitonarProduto = () => {
   if (
     codProdutoInput.value !== "" ||
     nomeProdutoInput.value !== "" ||
@@ -142,8 +140,8 @@ botaoAdicionarProduto.addEventListener("click", () => {
       style: "currency",
       currency: "BRL",
     }).format(Number(subtotalTotal - descontosTotal));
-    adicionarProdutoTabela();
-    corpoTabela.innerHTML += olamundo;
+
+    corpoTabela.innerHTML = montarTabela();
 
     codProdutoInput.value = "";
     nomeProdutoInput.value = "";
@@ -153,8 +151,13 @@ botaoAdicionarProduto.addEventListener("click", () => {
     codProdutoInput.focus();
   } else {
     alert("Por favor, coloque os dados abaixo");
+    codProdutoInput.focus();
   }
-});
+};
+
+let obj = [];
+
+botaoAdicionarProduto.addEventListener("click", adicitonarProduto);
 
 let headerDropdownVendedores = document.querySelector(
   "#header-dropdown-vendedores"

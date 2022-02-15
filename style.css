@@ -150,11 +150,26 @@ body {
   box-shadow: 0 0 5px #0002;
   border-radius: 5px;
   margin: 1rem 0 0 1rem;
-  padding: 1rem;
+  padding: 0 0 0 0.5rem;
   overflow: scroll;
+  scrollbar-width: 0.5rem;
+  scrollbar-color: #f0f;
   overflow-x: hidden;
   max-height: 60vh;
   /* height: 100%; */
+}
+
+#listagem-area::-webkit-scrollbar {
+  width: 10px;
+}
+
+#listagem-area::-webkit-scrollbar-track {
+  background: #dfdfdf;
+}
+
+#listagem-area::-webkit-scrollbar-thumb {
+  background-color: #999;
+  border-radius: 5px;
 }
 
 #corpo-tabela {
@@ -240,5 +255,5 @@ table.table.table-striped > tbody > tr > .delete-icon > i:hover {
 }
 
 .btn.btn-primary.botoes-funcoes {
-  /* margin: 0.15rem 0; */
+  box-shadow: 0 0 5px #0002;
 }
