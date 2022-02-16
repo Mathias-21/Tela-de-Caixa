@@ -17,12 +17,12 @@
         <header class="header">
             <ul class="header-nav mr-auto">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="header-dropdown-vendedores" role="button"
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown-vendedores" role="button"
                         data-coreui-toggle="dropdown" aria-expanded="false">
                         Vendedor
                     </a>
                     <div class="dropdown-menu" id="dropdown-menu-vendedores" aria-labelledby="headerDropdown">
-                        <div id="dropdown-vendedores" class="dropdown-content">
+                        <div id="dropdown-vendedores-area" class="dropdown-content">
                             <input type="text" class="form-control" autocomplete="additional-name"
                                 placeholder="Pesquisar Vendedor..." id="input-search-vendedores"
                                 onkeyup="filtrarVendedores()">
@@ -40,12 +40,12 @@
                     </div>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="header-dropdown-clientes" role="button"
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown-clientes" role="button"
                         data-coreui-toggle="dropdown" aria-expanded="false">
                         Cliente
                     </a>
                     <div class="dropdown-menu" id="dropdown-menu-clientes" aria-labelledby="headerDropdown">
-                        <div id="dropdown-clientes" class="dropdown-content">
+                        <div id="dropdown-clientes-area" class="dropdown-content">
                             <input type="text" class="form-control" autocomplete="additional-name"
                                 placeholder="Pesquisar Cliente..." id="input-search-clientes"
                                 onkeyup="filtrarClientes()">
@@ -159,7 +159,7 @@
                     <button class="btn btn-primary botoes-funcoes" id="btn-escolher-cliente">Escolher Cliente <br> Alt + 4</button>
                     <button class="btn btn-primary botoes-funcoes">Adicionar/Remover Indicador <br> Alt + 6</button>
                     <button class="btn btn-primary botoes-funcoes">Alterar o Tipo da Venda <br> Alt + 7</button>
-                    <button class="btn btn-primary botoes-funcoes">Retirar Item da Venda <br> Alt + 8</button>
+                    <button class="btn btn-primary botoes-funcoes" id="btn-retirar-item">Retirar Item da Venda <br> Alt + 8</button>
                     <button class="btn btn-primary botoes-funcoes">Descontos e Acrécimos <br> Alt + 9</button>
                     <button class="btn btn-primary botoes-funcoes">Finalzar Venda <br> Alt + 10</button>
                 </div>

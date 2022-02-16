@@ -7,7 +7,7 @@ body {
   height: 1rem;
 }
 
-#header-dropdown-vendedores {
+#dropdown-vendedores {
   min-width: 120px;
   text-align: center;
 }
@@ -17,16 +17,16 @@ body {
   color: #000;
 }
 
-#header-dropdown-clientes {
+#dropdown-clientes {
   width: 120px;
   text-align: center;
 }
 
-#header-dropdown-clientes:hover {
+#dropdown-clientes:hover {
   background-color: #dfdfdf;
 }
 
-#header-dropdown-vendedores:hover {
+#dropdown-vendedores:hover {
   background-color: #dfdfdf;
 }
 
@@ -42,7 +42,7 @@ body {
   justify-content: center;
 }
 
-#dropdown-vendedores {
+#dropdown-vendedores-area {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -70,7 +70,7 @@ body {
   background-color: #00000015;
 }
 
-#dropdown-clientes {
+#dropdown-clientes-area {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -172,10 +172,6 @@ body {
   border-radius: 5px;
 }
 
-#corpo-tabela {
-  margin-bottom: 0;
-}
-
 table.table.table-striped {
   margin-bottom: 0;
 }
@@ -187,6 +183,22 @@ table.table.table-striped > tbody > tr > .delete-icon {
 table.table.table-striped > tbody > tr > .delete-icon > i:hover {
   color: #e96d6d;
   cursor: pointer;
+}
+
+#corpo-tabela {
+  margin-bottom: 0;
+}
+
+.linhasTabela:hover {
+  background-color: #ddd;
+}
+
+.selecionado {
+  background-color: #4c78e855;
+}
+
+.selecionado:hover {
+  background-color: #4c78e878;
 }
 
 #informacao-compra-area {

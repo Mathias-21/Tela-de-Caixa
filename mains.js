@@ -1,60 +1,87 @@
-var popoverTriggerList = [].slice.call(
+// ================================================================================== Dependencias da Lib Coreui ==================================================================================
+const popoverTriggerList = [].slice.call(
   document.querySelectorAll('[data-coreui-toggle="popover"]')
 );
-var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+const popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
   return new coreui.Popover(popoverTriggerEl);
 });
-
-const buttonSearch = document.querySelector("#button-search");
-buttonSearch.addEventListener("click", () => alert("Pesquisando Item..."));
-
-let data = [];
-
-const botaoCancelarCompra = document.querySelector("#botao-cancelar-compra");
-const corpoTabela = document.querySelector("#corpo-tabela");
-const numeroProduto = document.querySelector(".numero-produto");
-const nomeProduto = document.querySelector(".nome-produto");
-const precoProduto = document.querySelector(".preco-produto");
-const qtdeProduto = document.querySelector(".qtde-produto");
-const descontoProduto = document.querySelector(".desconto-produto");
-const subtotalProduto = document.querySelector(".subtotal-produto");
-const codProdutoInput = document.querySelector("#cod-produto-input");
-const nomeProdutoInput = document.querySelector("#nome-produto-input");
-const precoProdutoInput = document.querySelector("#preco-produto-input");
-const qtdeProdutoInput = document.querySelector("#qtde-produto-input");
-const descontoProdutoInput = document.querySelector("#desconto-produto-input");
-const botaoAdicionarProduto = document.querySelector(
-  "#botao-adicionar-produto"
-);
+// Guardando elementos do HTML em constantes
+const total = document.querySelector("#total");
 const subtotal = document.querySelector("#subtotal");
 const descontos = document.querySelector("#descontos");
-const total = document.querySelector("#total");
-
+const corpoTabela = document.querySelector("#corpo-tabela");
+const inputClientes = document.querySelector("#input-search-clientes");
+const codProdutoInput = document.querySelector("#cod-produto-input");
+const nomeProdutoInput = document.querySelector("#nome-produto-input");
+const qtdeProdutoInput = document.querySelector("#qtde-produto-input");
+const DropdownClientes = document.querySelector("#dropdown-clientes");
+const precoProdutoInput = document.querySelector("#preco-produto-input");
+const descontoProdutoInput = document.querySelector("#desconto-produto-input");
+// =================================================================================================================================================
+const btnRetirarItem = document
+  .querySelector("#btn-retirar-item")
+  .addEventListener("click", () => {
+    const linhaSelecionado = document.querySelectorAll(".selecionado");
+    linhaSelecionado.forEach((linha) => {
+      const idLinha = linha.id.replace("linha", "");
+      console.log(idLinha);
+      apagarProduto(idLinha);
+    });
+  });
+// Declaração da variável do objeto de dados
+let data = [];
+// ================================================================================== Teclas de Atalho ==================================================================================
+// =================== Alt + 5 ===================
 const cancelarCompra = () => {
   data.splice(0, data.length);
   corpoTabela.innerHTML = data;
 };
-
 document.addEventListener("keydown", (event) => {
   const keyCode = event.keyCode;
   if (keyCode === 53) {
     if (event.altKey) cancelarCompra();
   }
 });
-
-botaoCancelarCompra.addEventListener("click", () => cancelarCompra());
-
-function apagarProduto(id) {
-  const numProduct = id.replace("produto", "");
-  data.splice(numProduct, 1);
-  corpoTabela.innerHTML = montarTabela();
+document
+  .querySelector("#botao-cancelar-compra")
+  .addEventListener("click", () => cancelarCompra());
+// =================== Alt + 4 ===================
+const escolherCliente = () => {
+  const dropdownMenuClientes = document.querySelector(
+    "#dropdown-menu-clientes"
+  );
+  DropdownClientes.classList.toggle("show");
+  dropdownMenuClientes.classList.toggle("show");
+  inputClientes.focus();
+};
+document.addEventListener("keydown", (event) => {
+  const keyCode = event.keyCode;
+  if (keyCode === 52) {
+    if (event.altKey) escolherCliente();
+  }
+});
+document
+  .querySelector("#btn-escolher-cliente")
+  .addEventListener("click", () => escolherCliente());
+// ================================================================================== Somar os valores dos produtos ==================================================================================
+function getSubtotal(total, item) {
+  // Transformar string em number. Ex: "R$ 1,00 => 1.00"
+  const subtotalNumber =
+    toNumber(item.PRECO_PRODUTO) * toNumber(item.QTDE_PRODUTO);
+  return total + subtotalNumber;
 }
-
+function getDescontos(total, item) {
+  // Transformar string em number. Ex: "R$ 1,00 => 1.00"
+  const descontoNumber =
+    toNumber(item.DESCONTO_PRODUTO) * toNumber(item.QTDE_PRODUTO);
+  return total + descontoNumber;
+}
+// ================================================================================== Montar Tabela ==================================================================================
 const montarTabela = () => {
-  var tabela = "";
+  let tabela = "";
   data.forEach((value, index) => {
     tabela += `
-    <tr>
+    <tr onclick='selecionarLinha(this.id)' class="linhasTabela" id='linha${index}'>
       <th scope='row' class='numero-produto'>
         ${value.ID_PRODUTO}
       </th>
@@ -80,73 +107,54 @@ const montarTabela = () => {
   });
   return tabela;
 };
-
-const adicitonarProduto = () => {
-  if (
-    codProdutoInput.value !== "" ||
-    nomeProdutoInput.value !== "" ||
-    precoProdutoInput.value !== "" ||
-    qtdeProdutoInput.value !== "" ||
-    descontoProdutoInput.value !== ""
-  ) {
-    let newData = {
-      ID_PRODUTO: codProdutoInput.value,
-      NOME_PRODUTO: nomeProdutoInput.value,
-      PRECO_PRODUTO: Intl.NumberFormat("pt-br", {
-        style: "currency",
-        currency: "BRL",
-      }).format(Number(precoProdutoInput.value)),
-      QTDE_PRODUTO: qtdeProdutoInput.value,
-      DESCONTO_PRODUTO: Intl.NumberFormat("pt-br", {
-        style: "currency",
-        currency: "BRL",
-      }).format(Number(descontoProdutoInput.value)),
-      SUBTOTAL_PRODUTO: Intl.NumberFormat("pt-br", {
-        style: "currency",
-        currency: "BRL",
-      }).format(
-        Number(
-          precoProdutoInput.value * qtdeProdutoInput.value -
-            descontoProdutoInput.value * qtdeProdutoInput.value
-        )
-      ),
+// ================================================================================== Formatar Numeros em Moeda ==================================================================================
+function formatar(value) {
+  const formatoMoeda = { style: "currency", currency: "BRL" };
+  return Intl.NumberFormat("pt-br", formatoMoeda).format(Number(value));
+}
+// ================================================================================== Formatar Moeda em Numero ==================================================================================
+function toNumber(value) {
+  return value.replace("R$", "").replace(",", ".");
+}
+// ================================================================================== Adicionar Produto ==================================================================================
+const adicionarProduto = () => {
+  if (codProdutoInput.value !== "") {
+    // Guardando os valores dos inputs em constantes
+    const valueCod = codProdutoInput.value;
+    const valueNome = nomeProdutoInput.value;
+    const valueQtde = qtdeProdutoInput.value;
+    const valuePreco = precoProdutoInput.value;
+    const valueDesconto = descontoProdutoInput.value;
+    // Formatando os valores em dinheiro(real)
+    const PrecoFormatado = formatar(valuePreco);
+    const DescontoFormatado = formatar(valueDesconto);
+    const SubtotalFormatado = formatar(
+      valuePreco * valueQtde - valueDesconto * valueQtde
+    );
+    // Criação de um novo objeto com os novos valores dos inputs adicionados
+    const newData = {
+      ID_PRODUTO: valueCod,
+      NOME_PRODUTO: valueNome,
+      QTDE_PRODUTO: valueQtde,
+      PRECO_PRODUTO: PrecoFormatado,
+      DESCONTO_PRODUTO: DescontoFormatado,
+      SUBTOTAL_PRODUTO: SubtotalFormatado,
     };
+    // Adicionando o novo objeto com os valores dos inputs ao "Banco de dados"
     data.push(newData);
-    var subtotalTotal = data.reduce(getSubtotal, 0);
-    function getSubtotal(total, item) {
-      return (
-        total +
-        item.PRECO_PRODUTO.replace("R$", "").replace(",", ".") *
-          item.QTDE_PRODUTO.replace("R$", "").replace(",", ".")
-      );
-    }
-    var descontosTotal = data.reduce(getDescontos, 0);
-    function getDescontos(total, item) {
-      return (
-        total +
-        item.DESCONTO_PRODUTO.replace("R$", "").replace(",", ".") *
-          item.QTDE_PRODUTO.replace("R$", "").replace(",", ".")
-      );
-    }
-    subtotal.innerHTML = Intl.NumberFormat("pt-br", {
-      style: "currency",
-      currency: "BRL",
-    }).format(Number(subtotalTotal));
-    descontos.innerHTML = Intl.NumberFormat("pt-br", {
-      style: "currency",
-      currency: "BRL",
-    }).format(Number(descontosTotal));
-    total.innerHTML = Intl.NumberFormat("pt-br", {
-      style: "currency",
-      currency: "BRL",
-    }).format(Number(subtotalTotal - descontosTotal));
-
+    // Adicionando os valores somados na tela
+    const subtotalTotal = data.reduce(getSubtotal, 0);
+    const descontosTotal = data.reduce(getDescontos, 0);
+    subtotal.innerHTML = formatar(subtotalTotal);
+    descontos.innerHTML = formatar(descontosTotal);
+    total.innerHTML = formatar(subtotalTotal - descontosTotal);
+    // Adicionando a linha(tr) na tabela
     corpoTabela.innerHTML = montarTabela();
-
+    // Limpando os valores dos inputs e focando no primeiro input
     codProdutoInput.value = "";
     nomeProdutoInput.value = "";
-    precoProdutoInput.value = "";
     qtdeProdutoInput.value = "";
+    precoProdutoInput.value = "";
     descontoProdutoInput.value = "";
     codProdutoInput.focus();
   } else {
@@ -154,23 +162,36 @@ const adicitonarProduto = () => {
     codProdutoInput.focus();
   }
 };
+// Pegando o botão de "Adicionar produto" e passando a função de adicionarProduto
+document
+  .querySelector("#botao-adicionar-produto")
+  .addEventListener("click", adicionarProduto);
 
-let obj = [];
-
-botaoAdicionarProduto.addEventListener("click", adicitonarProduto);
-
-let headerDropdownVendedores = document.querySelector(
-  "#header-dropdown-vendedores"
-);
-let inputVendedores = document.querySelector("#input-search-vendedores");
-
-headerDropdownVendedores.addEventListener("click", () => {
-  inputVendedores.focus();
-});
-
+// ================================================================================== Apagar Produto ==================================================================================
+function apagarProduto(id) {
+  const numProduct = id.replace("produto", "");
+  data.splice(numProduct, 1);
+  corpoTabela.innerHTML = montarTabela();
+  const subtotalTotal = data.reduce(getSubtotal, 0);
+  const descontosTotal = data.reduce(getDescontos, 0);
+  subtotal.innerHTML = formatar(subtotalTotal);
+  descontos.innerHTML = formatar(descontosTotal);
+  total.innerHTML = formatar(subtotalTotal - descontosTotal);
+}
+// ================================================================================== Selecionar Linha ==================================================================================
+const selecionarLinha = (id) => {
+  const numLinha = id.replace("linha", "");
+  const linhaEspec = document.querySelector(`#${id}`);
+  linhaEspec.classList.toggle("selecionado");
+};
+// ================================================================================== Filtrar Vendedores ==================================================================================
+const inputVendedores = document.querySelector("#input-search-vendedores");
+const DropdownVendedores = document.querySelector("#dropdown-vendedores");
+// Focar no input de pesquisar vendedores ao clicar no dropdown de vendedores
+DropdownVendedores.addEventListener("click", () => inputVendedores.focus());
 function filtrarVendedores() {
-  let inputVendedoresValue = inputVendedores.value.toUpperCase();
-  let p = document.querySelectorAll(".vendedores");
+  const inputVendedoresValue = inputVendedores.value.toUpperCase();
+  const p = document.querySelectorAll(".vendedores");
   for (let i = 0; i < p.length; i++) {
     txtP = p[i].textContent;
     if (txtP.toUpperCase().indexOf(inputVendedoresValue) > -1) {
@@ -180,25 +201,17 @@ function filtrarVendedores() {
     }
   }
 }
-
-let vendedores = document.querySelectorAll("#dropdown-vendedores > p");
-
+// Adicionar o nome do p clicado ao nome do dropdown de vendedores
+const vendedores = document.querySelectorAll("#dropdown-vendedores-area > p");
 for (let i = 0; i < vendedores.length; i++) {
-  vendedores[i].addEventListener("click", () => {
-    headerDropdownVendedores.innerHTML = vendedores[i].textContent;
-  });
+  vendedores[i].addEventListener(
+    "click",
+    () => (DropdownVendedores.innerHTML = vendedores[i].textContent)
+  );
 }
-
-let inputClientes = document.querySelector("#input-search-clientes");
-
-let headerDropdownClientes = document.querySelector(
-  "#header-dropdown-clientes"
-);
-
-headerDropdownClientes.addEventListener("click", () => {
-  inputClientes.focus();
-});
-
+// ================================================================================== Filtrar Clientes ==================================================================================
+// Focar no input de pesquisar clientes ao clicar no dropdown de clientes
+DropdownClientes.addEventListener("click", () => inputClientes.focus());
 function filtrarClientes() {
   let inputClientesValue = inputClientes.value.toUpperCase();
   let p = document.querySelectorAll(".clientes");
@@ -211,31 +224,12 @@ function filtrarClientes() {
     }
   }
 }
-
-let clientes = document.querySelectorAll("#dropdown-clientes > p");
-
+// Adicionar o nome do p clicado ao nome do dropdown de clientes
+const clientes = document.querySelectorAll("#dropdown-clientes-area > p");
 for (let i = 0; i < clientes.length; i++) {
   clientes[i].addEventListener("click", () => {
-    headerDropdownClientes.innerHTML = clientes[i].textContent;
+    DropdownClientes.innerHTML = clientes[i].textContent;
     // inputClientes.value = clientes[i].textContent;
     inputClientes.value = "";
   });
 }
-
-const btnEscolherCliente = document.querySelector("#btn-escolher-cliente");
-const dropdownMenuClientes = document.querySelector("#dropdown-menu-clientes");
-
-const escolherCliente = () => {
-  headerDropdownClientes.classList.toggle("show");
-  dropdownMenuClientes.classList.toggle("show");
-  inputClientes.focus();
-};
-
-document.addEventListener("keydown", (event) => {
-  const keyCode = event.keyCode;
-  if (keyCode === 52) {
-    if (event.altKey) escolherCliente();
-  }
-});
-
-btnEscolherCliente.addEventListener("click", () => escolherCliente());
