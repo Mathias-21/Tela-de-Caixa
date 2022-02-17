@@ -17,17 +17,6 @@ const qtdeProdutoInput = document.querySelector("#qtde-produto-input");
 const DropdownClientes = document.querySelector("#dropdown-clientes");
 const precoProdutoInput = document.querySelector("#preco-produto-input");
 const descontoProdutoInput = document.querySelector("#desconto-produto-input");
-// =================================================================================================================================================
-const btnRetirarItem = document
-  .querySelector("#btn-retirar-item")
-  .addEventListener("click", () => {
-    const linhaSelecionado = document.querySelectorAll(".selecionado");
-    linhaSelecionado.forEach((linha) => {
-      const idLinha = linha.id.replace("linha", "");
-      console.log(idLinha);
-      apagarProduto(idLinha);
-    });
-  });
 // Declaração da variável do objeto de dados
 let data = [];
 // ================================================================================== Teclas de Atalho ==================================================================================
@@ -81,9 +70,9 @@ const montarTabela = () => {
   let tabela = "";
   data.forEach((value, index) => {
     tabela += `
-    <tr onclick='selecionarLinha(this.id)' class="linhasTabela" id='linha${index}'>
+    <tr onclick='selecionarLinha(this.id)' class="linhasTabela" id='linha${value.ID_PRODUTO}'>
       <th scope='row' class='numero-produto'>
-        ${value.ID_PRODUTO}
+        ${value.COD_PRODUTO}
       </th>
       <td class='nome-produto'> 
         ${value.NOME_PRODUTO}
@@ -100,10 +89,11 @@ const montarTabela = () => {
       <td class='subtotal-produto'> 
         ${value.SUBTOTAL_PRODUTO} 
       </td>
-      <td class='delete-icon' onclick='apagarProduto(this.id)' id='produto${index}'>
-        <i class='fas fa-trash'/>
+      <td class='delete-icon'>
+        <i class='fas fa-trash' onclick='apagarProduto(this.id)' id='produto${index}'/>
       </td>
-    </tr>`;
+    </tr>
+    `;
   });
   return tabela;
 };
@@ -114,7 +104,7 @@ function formatar(value) {
 }
 // ================================================================================== Formatar Moeda em Numero ==================================================================================
 function toNumber(value) {
-  return value.replace("R$", "").replace(",", ".");
+  return value.replace("R$", "").replace(".", "").replace(",", ".");
 }
 // ================================================================================== Adicionar Produto ==================================================================================
 const adicionarProduto = () => {
@@ -133,7 +123,8 @@ const adicionarProduto = () => {
     );
     // Criação de um novo objeto com os novos valores dos inputs adicionados
     const newData = {
-      ID_PRODUTO: valueCod,
+      ID_PRODUTO: data.length,
+      COD_PRODUTO: valueCod,
       NOME_PRODUTO: valueNome,
       QTDE_PRODUTO: valueQtde,
       PRECO_PRODUTO: PrecoFormatado,
@@ -142,6 +133,7 @@ const adicionarProduto = () => {
     };
     // Adicionando o novo objeto com os valores dos inputs ao "Banco de dados"
     data.push(newData);
+    // console.log(data);
     // Adicionando os valores somados na tela
     const subtotalTotal = data.reduce(getSubtotal, 0);
     const descontosTotal = data.reduce(getDescontos, 0);
@@ -166,11 +158,10 @@ const adicionarProduto = () => {
 document
   .querySelector("#botao-adicionar-produto")
   .addEventListener("click", adicionarProduto);
-
 // ================================================================================== Apagar Produto ==================================================================================
 function apagarProduto(id) {
   const numProduct = id.replace("produto", "");
-  data.splice(numProduct, 1);
+  data.splice(Number(numProduct), 1);
   corpoTabela.innerHTML = montarTabela();
   const subtotalTotal = data.reduce(getSubtotal, 0);
   const descontosTotal = data.reduce(getDescontos, 0);
@@ -180,10 +171,36 @@ function apagarProduto(id) {
 }
 // ================================================================================== Selecionar Linha ==================================================================================
 const selecionarLinha = (id) => {
-  const numLinha = id.replace("linha", "");
+  // const numLinha = id.replace("linha", "");
   const linhaEspec = document.querySelector(`#${id}`);
   linhaEspec.classList.toggle("selecionado");
 };
+// ================================================================================== Retirar Item(s) ==================================================================================
+const retirarItem = () => {
+  const linhaSelecionada = document.querySelectorAll(".selecionado");
+  let idLinhaSelecionada = [];
+  linhaSelecionada.forEach((linha) => {
+    const linhaEspec = linha.id.replace("linha", "");
+    idLinhaSelecionada.push(Number(linhaEspec));
+  });
+  const idProduto = data.filter((value) => {
+    if (!idLinhaSelecionada.includes(value.ID_PRODUTO)) {
+      return value;
+    }
+  });
+  data = idProduto;
+  corpoTabela.innerHTML = montarTabela();
+};
+
+const btnRetirarItem = document
+  .querySelector("#btn-retirar-item")
+  .addEventListener("click", retirarItem);
+document.addEventListener("keydown", (event) => {
+  const keyCode = event.keyCode;
+  if (keyCode === 56) {
+    if (event.altKey) retirarItem();
+  }
+});
 // ================================================================================== Filtrar Vendedores ==================================================================================
 const inputVendedores = document.querySelector("#input-search-vendedores");
 const DropdownVendedores = document.querySelector("#dropdown-vendedores");
