@@ -7,7 +7,8 @@ body {
   height: 1rem;
 }
 
-#dropdown-vendedores {
+#dropdown-vendedores,
+#dropdown-clientes {
   min-width: 120px;
   text-align: center;
 }
@@ -17,15 +18,7 @@ body {
   color: #000;
 }
 
-#dropdown-clientes {
-  width: 120px;
-  text-align: center;
-}
-
-#dropdown-clientes:hover {
-  background-color: #dfdfdf;
-}
-
+#dropdown-clientes:hover,
 #dropdown-vendedores:hover {
   background-color: #dfdfdf;
 }
@@ -42,59 +35,37 @@ body {
   justify-content: center;
 }
 
-#dropdown-vendedores-area {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-#input-search-vendedores {
-  border: 0;
-  border-radius: 0;
-  border-bottom: 1px solid #b1b7c1;
-}
-
-#input-search-vendedores:focus {
-  box-shadow: 0 0 0 0 transparent;
-}
-
-.vendedores {
-  cursor: pointer;
-  text-align: center;
-  margin-bottom: 0;
-  padding: 0.5rem;
-  /* border-bottom: 1px solid #222; */
-}
-
-.vendedores:hover {
-  background-color: #00000015;
-}
-
+#dropdown-vendedores-area,
 #dropdown-clientes-area {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
 
+#input-search-vendedores,
 #input-search-clientes {
   border: 0;
   border-radius: 0;
   border-bottom: 1px solid #b1b7c1;
 }
 
+#input-search-vendedores:focus,
 #input-search-clientes:focus {
   box-shadow: 0 0 0 0 transparent;
 }
 
-.clientes {
+.vendedores,
+.clientes,
+.tiposVenda {
   cursor: pointer;
   text-align: center;
   margin-bottom: 0;
   padding: 0.5rem;
-  /* border-bottom: 1px solid #222; */
 }
 
-.clientes:hover {
+.vendedores:hover,
+.clientes:hover,
+.tiposVenda:hover {
   background-color: #00000015;
 }
 
@@ -156,7 +127,6 @@ body {
   scrollbar-color: #f0f;
   overflow-x: hidden;
   max-height: 60vh;
-  /* height: 100%; */
 }
 
 #listagem-area::-webkit-scrollbar {
@@ -268,4 +238,56 @@ table.table.table-striped > tbody > tr > .delete-icon > i:hover {
 
 .btn.btn-primary.botoes-funcoes {
   box-shadow: 0 0 5px #0002;
+}
+
+#modal-descontos {
+  max-width: 60%;
+}
+
+.titulo-desconto {
+  text-align: center;
+}
+
+.desconto-unitario-area,
+.desconto-total-area {
+  display: flex;
+}
+
+.descontos-area {
+  display: flex;
+  flex-direction: column;
+  flex: 3;
+  margin-right: 1rem;
+}
+
+.informacao-produto-desconto,
+.informacao-produto-desconto-total {
+  flex: 1;
+}
+
+.descontos,
+.acrescimos {
+  display: flex;
+}
+
+.porcentagem {
+  margin-left: 0.35rem;
+}
+
+.dinheiro {
+  margin-right: 0.35rem;
+}
+
+.input-descontos-area,
+.input-acrescimos-area {
+  display: flex;
+  flex-direction: column;
+}
+
+.dinheiro {
+  width: 50%;
+}
+
+.porcentagem {
+  width: 25%;
 }
