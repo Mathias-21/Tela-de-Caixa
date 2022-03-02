@@ -12,10 +12,12 @@ const acrescimo = document.querySelector("#acrescimo");
 const descontos = document.querySelector("#descontos");
 const corpoTabela = document.querySelector("#corpo-tabela");
 const inputClientes = document.querySelector("#input-search-clientes");
+const inputTipoVenda = document.querySelector("#input-search-tipo-venda");
 const codProdutoInput = document.querySelector("#cod-produto-input");
 const nomeProdutoInput = document.querySelector("#nome-produto-input");
 const qtdeProdutoInput = document.querySelector("#qtde-produto-input");
 const DropdownClientes = document.querySelector("#dropdown-clientes");
+const DropdownTipoVenda = document.querySelector("#dropdown-tipo-venda");
 const precoProdutoInput = document.querySelector("#preco-produto-input");
 const descontoProdutoInput = document.querySelector("#desconto-produto-input");
 // Declaração da variável do objeto de dados
@@ -52,6 +54,23 @@ document.addEventListener("keydown", (event) => {
 document
   .querySelector("#btn-escolher-cliente")
   .addEventListener("click", () => escolherCliente());
+
+const escolherTipoVenda = () => {
+  const dropdownMenuTipoVenda = document.querySelector(
+    "#dropdown-menu-tipo-venda"
+  );
+  DropdownTipoVenda.classList.toggle("show");
+  dropdownMenuTipoVenda.classList.toggle("show");
+  inputTipoVenda.focus();
+};
+document.addEventListener("keydown", (event) => {
+  const keyCode = event.keyCode;
+  if (keyCode === 55 && event.altKey) escolherTipoVenda();
+});
+document
+  .querySelector("#btn-alterar-tipo-venda")
+  .addEventListener("click", () => escolherTipoVenda());
+
 // ================================================================================== Somar os valores dos produtos ==================================================================================
 function getSubtotal(total, item) {
   const subtotalNumber =
@@ -142,7 +161,7 @@ const adicionarProduto = () => {
   descontos.innerHTML = formatar(valueDesconto);
   total.innerHTML = formatar(subtotalTotal);
   // Adicionando a linha(tr) na tabela
-  corpoTabela.innerHTML = montarTabela;
+  corpoTabela.innerHTML = montarTabela();
   // Limpando os valores dos inputs e focando no primeiro input
   codProdutoInput.value = "";
   nomeProdutoInput.value = "";
@@ -166,6 +185,21 @@ function apagarProduto(id) {
   total.innerHTML = formatar(subtotalTotal - descontosTotal);
   localStorage.setItem("produtos", JSON.stringify(data));
 }
+// ================================================================================== Alterar Produto ==================================================================================
+const btnAlterarItem = document.querySelector("#btn-alterar-item");
+btnAlterarItem.addEventListener("click", () => alterarProduto());
+function alterarProduto() {
+  const itemSelecionado = document.querySelectorAll(".selecionado");
+  if (itemSelecionado.length < 1) {
+    alert("Por favor, selecione um produto para alterar");
+  } else {
+    // const idItem = itemSelecionado[0].id.replace("linha", "");
+    var modalAlterarItem = new coreui.Modal(
+      document.querySelector("#modalAlterarItem")
+    );
+    modalAlterarItem.toggle();
+  }
+}
 // ================================================================================== Selecionar Linha ==================================================================================
 const selecionarLinha = (id) => {
   const linhaEspec = document.querySelector(`#${id}`);
@@ -174,6 +208,9 @@ const selecionarLinha = (id) => {
 // ================================================================================== Retirar Item(s) ==================================================================================
 const retirarItem = () => {
   const linhaSelecionada = document.querySelectorAll(".selecionado");
+  if (linhaSelecionada.length < 1) {
+    alert("Por favor, selecione um produto para retirar");
+  }
   let idLinhaSelecionada = [];
   linhaSelecionada.forEach((linha) => {
     const linhaEspec = linha.id.replace("linha", "");
@@ -242,6 +279,33 @@ for (let i = 0; i < clientes.length; i++) {
   clientes[i].addEventListener("click", () => {
     DropdownClientes.innerHTML = clientes[i].textContent;
     inputClientes.value = "";
+  });
+}
+
+// ================================================================================== Filtrar tipo de venda ==================================================================================
+// Focar no input de pesquisar clientes ao clicar no dropdown de clientes
+
+DropdownTipoVenda.addEventListener("click", () => inputTipoVenda.focus());
+function filtrarTipoVenda() {
+  let inputTipoVendaValue = inputTipoVenda.value.toUpperCase();
+  let p = document.querySelectorAll(".clientes");
+  for (let i = 0; i < p.length; i++) {
+    txtP = p[i].textContent;
+    if (txtP.toUpperCase().indexOf(inputTipoVendaValue) > -1) {
+      p[i].style.display = "";
+    } else {
+      p[i].style.display = "none";
+    }
+  }
+}
+// Adicionar o nome do p clicado ao nome do dropdown de clientes
+const tiposVendas = document.querySelectorAll(
+  "#dropdown-alterar-tipo-venda-area > p"
+);
+for (let i = 0; i < tiposVendas.length; i++) {
+  tiposVendas[i].addEventListener("click", () => {
+    DropdownTipoVenda.innerHTML = tiposVendas[i].textContent;
+    inputTipoVenda.value = "";
   });
 }
 

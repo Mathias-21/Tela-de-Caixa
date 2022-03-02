@@ -8,7 +8,8 @@ body {
 }
 
 #dropdown-vendedores,
-#dropdown-clientes {
+#dropdown-clientes,
+#dropdown-tipo-venda {
   min-width: 120px;
   text-align: center;
 }
@@ -19,7 +20,8 @@ body {
 }
 
 #dropdown-clientes:hover,
-#dropdown-vendedores:hover {
+#dropdown-vendedores:hover,
+#dropdown-tipo-venda:hover {
   background-color: #dfdfdf;
 }
 
@@ -36,21 +38,24 @@ body {
 }
 
 #dropdown-vendedores-area,
-#dropdown-clientes-area {
+#dropdown-clientes-area,
+#dropdown-alterar-tipo-venda-area {
   display: flex;
   flex-direction: column;
   width: 100%;
 }
 
 #input-search-vendedores,
-#input-search-clientes {
+#input-search-clientes,
+#input-search-tipo-venda {
   border: 0;
   border-radius: 0;
   border-bottom: 1px solid #b1b7c1;
 }
 
 #input-search-vendedores:focus,
-#input-search-clientes:focus {
+#input-search-clientes:focus,
+#input-search-tipo-venda:focus {
   box-shadow: 0 0 0 0 transparent;
 }
 
