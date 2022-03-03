@@ -296,3 +296,28 @@ table.table.table-striped > tbody > tr > .delete-icon > i:hover {
 .porcentagem {
   width: 25%;
 }
+
+#informacao-fixa-produto-alterar-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+#informacao-fixa-produto-alterar-item > div {
+  display: flex;
+  flex-direction: column;
+}
+
+#informacao-fixa-produto-alterar-item > div > p {
+  margin: 0;
+}
+
+#inputs-alterar-item-area {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 0.5rem;
+}
+
+.input-alterar-item > label {
+  font-weight: 600;
+  color: #2c384af2;
+}

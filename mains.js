@@ -186,30 +186,85 @@ function apagarProduto(id) {
   localStorage.setItem("produtos", JSON.stringify(data));
 }
 // ================================================================================== Alterar Produto ==================================================================================
+const salvarAlteracaoItembtn = document.querySelector("#salvar-alteracao-item");
 const btnAlterarItem = document.querySelector("#btn-alterar-item");
 btnAlterarItem.addEventListener("click", () => alterarProduto());
+
+var selecionado = undefined;
+
+const setSelecionado = (id) => {
+  let idNumber = Number(id.replace("linha", ""));
+  selecionado = idNumber;
+};
+
+const codProdutoAlterarItem = document.querySelector(
+  "#codigo-produto-alterar-item"
+);
+const nomeProdutoAlterarItem = document.querySelector(
+  "#nome-produto-alterar-item"
+);
+const precoProdutoAlterarItem = document.querySelector(
+  "#preco-produto-alterar-item"
+);
+const quantidadeProdutoAlterarItem = document.querySelector(
+  "#quantidade-produto-alterar-item"
+);
+
 function alterarProduto() {
   const itemSelecionado = document.querySelectorAll(".selecionado");
+
   if (itemSelecionado.length < 1) {
-    alert("Por favor, selecione um produto para alterar");
+    alert("Por favor, selecione um item para alterar");
+  } else if (itemSelecionado.length > 1) {
+    alert("Não é possivel alterar mais de um item por vez");
   } else {
-    // const idItem = itemSelecionado[0].id.replace("linha", "");
     var modalAlterarItem = new coreui.Modal(
       document.querySelector("#modalAlterarItem")
     );
     modalAlterarItem.toggle();
+    const idItem = itemSelecionado[0].id.replace("linha", "");
+    const dataItem = data[idItem];
+
+    const precoNumero = dataItem.PRECO_PRODUTO.replace("R$ ", "");
+
+    codProdutoAlterarItem.innerHTML = dataItem.COD_PRODUTO;
+    nomeProdutoAlterarItem.innerHTML = dataItem.NOME_PRODUTO;
+    precoProdutoAlterarItem.value = precoNumero;
+    quantidadeProdutoAlterarItem.value = dataItem.QTDE_PRODUTO;
+
+    precoProdutoAlterarItem.focus();
   }
 }
+
+salvarAlteracaoItembtn.addEventListener("click", () => {
+  const precoNumber = Number(toNumber(precoProdutoAlterarItem.value));
+  const quantidadeNumber = quantidadeProdutoAlterarItem.value;
+  const subTotalNumber = precoNumber * quantidadeNumber;
+  const subTotalFormatado = formatar(subTotalNumber);
+  const precoFormatado = formatar(precoNumber);
+
+  data[selecionado].PRECO_PRODUTO = precoFormatado;
+  data[selecionado].QTDE_PRODUTO = quantidadeNumber;
+
+  data[selecionado].SUBTOTAL_PRODUTO = subTotalFormatado;
+
+  corpoTabela.innerHTML = montarTabela();
+  const subtotalTotal = data.reduce(getSubtotal, 0);
+  subtotal.innerHTML = formatar(subtotalTotal);
+  total.innerHTML = formatar(subtotalTotal - descontosTotal);
+});
+
 // ================================================================================== Selecionar Linha ==================================================================================
 const selecionarLinha = (id) => {
   const linhaEspec = document.querySelector(`#${id}`);
   linhaEspec.classList.toggle("selecionado");
+  setSelecionado(id);
 };
 // ================================================================================== Retirar Item(s) ==================================================================================
 const retirarItem = () => {
   const linhaSelecionada = document.querySelectorAll(".selecionado");
   if (linhaSelecionada.length < 1) {
-    alert("Por favor, selecione um produto para retirar");
+    alert("Por favor, selecione um item para retirar");
   }
   let idLinhaSelecionada = [];
   linhaSelecionada.forEach((linha) => {
