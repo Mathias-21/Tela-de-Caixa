@@ -82,6 +82,11 @@ function getDescontos(total, item) {
     toNumber(item.DESCONTO_PRODUTO) * toNumber(item.QTDE_PRODUTO);
   return total + descontoNumber;
 }
+function getAcrescimos(total, item) {
+  const acrescimoNumber =
+    toNumber(item.ACRESCIMO_PRODUTO) * toNumber(item.QTDE_PRODUTO);
+  return total + acrescimoNumber;
+}
 // ================================================================================== Montar Tabela ==================================================================================
 const montarTabela = () => {
   let tabela = "";
@@ -218,8 +223,8 @@ function alterarProduto() {
   } else if (itemSelecionado.length > 1) {
     alert("Não é possivel alterar mais de um item por vez");
   } else {
-    var modalAlterarItem = new coreui.Modal(
-      document.querySelector("#modalAlterarItem")
+    const modalAlterarItem = new coreui.Modal(
+      document.querySelector("#modal-alterar-item")
     );
     modalAlterarItem.toggle();
     const idItem = itemSelecionado[0].id.replace("linha", "");
@@ -237,7 +242,7 @@ function alterarProduto() {
 }
 
 salvarAlteracaoItembtn.addEventListener("click", () => {
-  const precoNumber = Number(toNumber(precoProdutoAlterarItem.value));
+  const precoNumber = toNumber(precoProdutoAlterarItem.value);
   const quantidadeNumber = quantidadeProdutoAlterarItem.value;
   const subTotalNumber = precoNumber * quantidadeNumber;
   const subTotalFormatado = formatar(subTotalNumber);
@@ -245,7 +250,6 @@ salvarAlteracaoItembtn.addEventListener("click", () => {
 
   data[selecionado].PRECO_PRODUTO = precoFormatado;
   data[selecionado].QTDE_PRODUTO = quantidadeNumber;
-
   data[selecionado].SUBTOTAL_PRODUTO = subTotalFormatado;
 
   corpoTabela.innerHTML = montarTabela();
@@ -365,17 +369,11 @@ for (let i = 0; i < tiposVendas.length; i++) {
 }
 
 // ================================================================================== Modal de Descontos ==================================================================================
-const inputDescontoDinheiroTotal = document.querySelector(
-  "#input-desconto-dinheiro-total"
+const btnDescontosAcresimos = document.querySelector(
+  "#btn-descontos-acrescimos"
 );
-const inputDescontoPorcentagemTotal = document.querySelector(
-  "#input-desconto-porcentagem-total"
-);
-const inputAcrescimoDinheiroTotal = document.querySelector(
-  "#input-acrescimo-dinheiro-total"
-);
-const inputAcrescimoPorcentagemTotal = document.querySelector(
-  "#input-acrescimo-porcentagem-total"
+const modalDescontosAcrescimos = new coreui.Modal(
+  document.querySelector("#modal-descontos-acrescimos")
 );
 const inputValorTotal = document.querySelector("#input-valor-total");
 const inputValorAlteradoTotal = document.querySelector(
@@ -384,78 +382,190 @@ const inputValorAlteradoTotal = document.querySelector(
 const salvarDescontosAcrescimos = document.querySelector(
   "#salvar-descontos-acrescimos"
 );
+const valorUnitario = document.querySelector("#valor-unitario");
+const quantidadeUnitaria = document.querySelector("#quantidade-unitaria");
+const valorAlteradoUnitario = document.querySelector(
+  "#valor-alterado-unitario"
+);
 
 let descontoTotal = 0;
 let descontoPorcentagemTotal = 0;
 let acrescimoTotal = 0;
 let acrescimoPorcentagemTotal = 0;
-// ====================================== Descontos ======================================
-inputDescontoDinheiroTotal.addEventListener("blur", () => {
-  valorVenda = data.reduce(getSubtotal, 0);
-  descontoTotal = Number(inputDescontoDinheiroTotal.value);
-  valorVenda -= descontoTotal;
-  inputValorAlteradoTotal.innerHTML = formatar(valorVenda);
-});
-inputDescontoPorcentagemTotal.addEventListener("blur", () => {
-  if (descontoTotal === 0 || undefined) {
-    valorVenda = data.reduce(getSubtotal, 0);
-    descontoPorcentagemTotal = Number(inputDescontoPorcentagemTotal.value);
-    const valorDinheiro = (valorVenda / 100) * descontoPorcentagemTotal;
-    valorVenda -= valorDinheiro;
-    descontoPorcentagemTotal = valorDinheiro;
-    inputValorAlteradoTotal.innerHTML = formatar(valorVenda);
-  }
-});
-// ====================================== Acréscimos ======================================
-inputAcrescimoDinheiroTotal.addEventListener("blur", () => {
-  if (descontoTotal === 0 && descontoPorcentagemTotal === 0) {
-    valorVenda = data.reduce(getSubtotal, 0);
-  }
-  acrescimoTotal = Number(inputAcrescimoDinheiroTotal.value);
-  if (acrescimoTotal !== 0) {
-    valorVenda += acrescimoTotal;
-  }
-  inputValorAlteradoTotal.innerHTML = formatar(valorVenda);
-});
-inputAcrescimoPorcentagemTotal.addEventListener("blur", () => {
-  if (
-    descontoTotal === 0 &&
-    descontoPorcentagemTotal === 0 &&
-    acrescimoTotal === 0
-  ) {
-    valorVenda = data.reduce(getSubtotal, 0);
-  }
-  if (acrescimoTotal === 0 || undefined) {
-    acrescimoPorcentagemTotal = Number(inputAcrescimoPorcentagemTotal.value);
-    const valorDinheiro = (valorVenda / 100) * acrescimoPorcentagemTotal;
-    valorVenda += valorDinheiro;
-    acrescimoPorcentagemTotal = valorDinheiro;
-    inputValorAlteradoTotal.innerHTML = formatar(valorVenda);
-  }
-});
-// ====================================== Salvar Alterações ======================================
-salvarDescontosAcrescimos.addEventListener("click", () => {
-  if (descontoTotal === 0) {
-    descontos.innerHTML = formatar(descontoPorcentagemTotal);
+btnDescontosAcresimos.addEventListener("click", () =>
+  aplicarDescontosAcrescimos()
+);
+
+const aplicarDescontosAcrescimos = () => {
+  // ====================================== Descontos
+  const itemSelecionado = document.querySelectorAll(".selecionado");
+  const inputDescontoDinheiroUnitario = document.querySelector(
+    "#input-desconto-dinheiro-unitario"
+  );
+  const inputDescontoPorcentagemUnitario = document.querySelector(
+    "#input-desconto-porcentagem-unitario"
+  );
+  const inputAcrescimoDinheiroUnitario = document.querySelector(
+    "#input-acrescimo-dinheiro-unitario"
+  );
+  const inputAcrescimoPorcentagemUnitario = document.querySelector(
+    "#input-acrescimo-porcentagem-unitario"
+  );
+  const inputDescontoDinheiroTotal = document.querySelector(
+    "#input-desconto-dinheiro-total"
+  );
+  const inputDescontoPorcentagemTotal = document.querySelector(
+    "#input-desconto-porcentagem-total"
+  );
+  const inputAcrescimoDinheiroTotal = document.querySelector(
+    "#input-acrescimo-dinheiro-total"
+  );
+  const inputAcrescimoPorcentagemTotal = document.querySelector(
+    "#input-acrescimo-porcentagem-total"
+  );
+
+  if (itemSelecionado.length > 1) {
+    alert("Não é possível adicionar descontos ou acrécimos em mais de um item");
   } else {
-    descontos.innerHTML = formatar(descontoTotal);
+    modalDescontosAcrescimos.toggle();
+    const itemData = data[selecionado];
+
+    if (itemSelecionado.length === 0) {
+      inputDescontoDinheiroUnitario.disabled = true;
+      inputDescontoPorcentagemUnitario.disabled = true;
+      inputAcrescimoDinheiroUnitario.disabled = true;
+      inputAcrescimoPorcentagemUnitario.disabled = true;
+
+      valorUnitario.innerHTML = "-";
+      quantidadeUnitaria.innerHTML = "-";
+      valorAlteradoUnitario.innerHTML = "-";
+    } else if (itemSelecionado.length === 1) {
+      inputDescontoDinheiroUnitario.disabled = false;
+      inputDescontoPorcentagemUnitario.disabled = false;
+      inputAcrescimoDinheiroUnitario.disabled = false;
+      inputAcrescimoPorcentagemUnitario.disabled = false;
+
+      valorUnitario.innerHTML = itemData.PRECO_PRODUTO;
+      quantidadeUnitaria.innerHTML = itemData.QTDE_PRODUTO;
+      valorAlteradoUnitario.innerHTML = itemData.PRECO_PRODUTO;
+    }
+    // ========================================================== Desconto e Acréscimo por unidade
+
+    inputDescontoDinheiroUnitario.addEventListener("blur", () => {
+      console.log(itemData);
+      itemData.DESCONTO_PRODUTO = formatar(
+        toNumber(inputDescontoDinheiroUnitario.value)
+      );
+      itemData.SUBTOTAL_PRODUTO = formatar(
+        (toNumber(itemData.PRECO_PRODUTO) -
+          toNumber(itemData.DESCONTO_PRODUTO)) *
+          toNumber(itemData.QTDE_PRODUTO)
+      );
+      valorAlteradoUnitario.innerHTML = formatar(
+        toNumber(itemData.PRECO_PRODUTO) - toNumber(itemData.DESCONTO_PRODUTO)
+      );
+    });
+    inputDescontoPorcentagemUnitario.addEventListener("blur", () => {});
+    inputAcrescimoDinheiroUnitario.addEventListener("blur", () => {
+      itemData.ACRESCIMO_PRODUTO = formatar(
+        toNumber(inputAcrescimoDinheiroUnitario.value)
+      );
+      itemData.SUBTOTAL_PRODUTO = formatar(
+        (toNumber(itemData.PRECO_PRODUTO) +
+          toNumber(itemData.ACRESCIMO_PRODUTO)) *
+          toNumber(itemData.QTDE_PRODUTO)
+      );
+      valorAlteradoUnitario.innerHTML = formatar(
+        toNumber(itemData.PRECO_PRODUTO) + toNumber(itemData.ACRESCIMO_PRODUTO)
+      );
+    });
+    inputAcrescimoPorcentagemUnitario.addEventListener("blur", () => {});
+
+    // ========================================================== Desconto e Acréscimo total
+
+    inputDescontoDinheiroTotal.addEventListener("blur", () => {
+      valorVenda = data.reduce(getSubtotal, 0);
+      descontoTotal = Number(inputDescontoDinheiroTotal.value);
+      valorVenda -= descontoTotal;
+      inputValorAlteradoTotal.innerHTML = formatar(valorVenda);
+    });
+    inputDescontoPorcentagemTotal.addEventListener("blur", () => {
+      if (descontoTotal === 0 || undefined) {
+        valorVenda = data.reduce(getSubtotal, 0);
+        descontoPorcentagemTotal = Number(inputDescontoPorcentagemTotal.value);
+        const valorDinheiro = (valorVenda / 100) * descontoPorcentagemTotal;
+        valorVenda -= valorDinheiro;
+        descontoPorcentagemTotal = valorDinheiro;
+        inputValorAlteradoTotal.innerHTML = formatar(valorVenda);
+      }
+    });
+    // ====================================== Acréscimos
+    inputAcrescimoDinheiroTotal.addEventListener("blur", () => {
+      if (descontoTotal === 0 && descontoPorcentagemTotal === 0) {
+        valorVenda = data.reduce(getSubtotal, 0);
+      }
+      acrescimoTotal = Number(inputAcrescimoDinheiroTotal.value);
+      if (acrescimoTotal !== 0) {
+        valorVenda += acrescimoTotal;
+      }
+      inputValorAlteradoTotal.innerHTML = formatar(valorVenda);
+    });
+    inputAcrescimoPorcentagemTotal.addEventListener("blur", () => {
+      if (
+        descontoTotal === 0 &&
+        descontoPorcentagemTotal === 0 &&
+        acrescimoTotal === 0
+      ) {
+        valorVenda = data.reduce(getSubtotal, 0);
+      }
+      if (acrescimoTotal === 0 || undefined) {
+        acrescimoPorcentagemTotal = Number(
+          inputAcrescimoPorcentagemTotal.value
+        );
+        const valorDinheiro = (valorVenda / 100) * acrescimoPorcentagemTotal;
+        valorVenda += valorDinheiro;
+        acrescimoPorcentagemTotal = valorDinheiro;
+        inputValorAlteradoTotal.innerHTML = formatar(valorVenda);
+      }
+    });
+    // ====================================== Salvar Alterações
+    salvarDescontosAcrescimos.addEventListener("click", () => {
+      if (descontoTotal === 0) {
+        descontos.innerHTML = formatar(descontoPorcentagemTotal);
+      } else {
+        descontos.innerHTML = formatar(descontoTotal);
+      }
+      if (acrescimoTotal === 0) {
+        acrescimo.innerHTML = formatar(acrescimoPorcentagemTotal);
+      } else {
+        acrescimo.innerHTML = formatar(acrescimoTotal);
+      }
+      if (valorVenda !== undefined) {
+        total.innerHTML = formatar(valorVenda);
+      }
+      inputDescontoDinheiroUnitario.value = "";
+      const subtotalTotal = data.reduce(getSubtotal, 0);
+      const descontosTotal = data.reduce(getDescontos, 0);
+      const acrescimosTotal = data.reduce(getAcrescimos, 0);
+      subtotal.innerHTML = formatar(subtotalTotal);
+      descontos.innerHTML = formatar(descontosTotal);
+      acrescimo.innerHTML = formatar(acrescimosTotal);
+      total.innerHTML = formatar(
+        subtotalTotal - descontosTotal + acrescimosTotal
+      );
+
+      corpoTabela.innerHTML = montarTabela();
+    });
   }
-  if (acrescimoTotal === 0) {
-    acrescimo.innerHTML = formatar(acrescimoPorcentagemTotal);
-  } else {
-    acrescimo.innerHTML = formatar(acrescimoTotal);
-  }
-  if (valorVenda !== undefined) {
-    total.innerHTML = formatar(valorVenda);
-  }
-});
+};
 
 const subtotalTotal = data.reduce(getSubtotal, 0);
-const descontosTotal = 0;
+const descontosTotal = data.reduce(getDescontos, 0);
+const acrescimosTotal = data.reduce(getAcrescimos, 0);
 corpoTabela.innerHTML = montarTabela();
 subtotal.innerHTML = formatar(subtotalTotal);
-acrescimo.innerHTML = formatar(acrescimoTotal);
+acrescimo.innerHTML = formatar(acrescimosTotal);
 descontos.innerHTML = formatar(descontosTotal);
-total.innerHTML = formatar(subtotalTotal);
+total.innerHTML = formatar(subtotalTotal - descontosTotal + acrescimosTotal);
 inputValorTotal.innerHTML = formatar(subtotalTotal);
 inputValorAlteradoTotal.innerHTML = formatar(subtotalTotal);

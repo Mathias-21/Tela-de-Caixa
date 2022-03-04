@@ -94,20 +94,6 @@
                         <label class="label-input">Quantidade</label>
                         <input type=" text" id="qtde-produto-input" class=" form-control input-compra">
                     </div>
-                    <!-- <div class="col-6">
-                        <label class="label-input">Desconto</label>
-                        <input type="text" id="desconto-produto-input" class=" form-control input-compra">
-                    </div>
-                    <div class="col-6">
-                        <label class="label-input">Acréscimo</label>
-                        <input type="text" id="acrescimo-produto-input" class=" form-control input-compra">
-                    </div>
-                    <div class="col-12">
-                        <input type="checkbox" class="form-check-input" id="checkbox-troca-produto">
-                        <label class="form-check-label" for="checkbox-troca-produto">
-                            Troca de Produto
-                        </label>
-                    </div> -->
                     <div class="col-12">
                         <button class="btn btn-primary" id="botao-adicionar-produto">Adicionar Produto</button>
                     </div>
@@ -148,39 +134,41 @@
                 </div>
             </div>
             <div class="col-md-9" id="pesquisa-listagem-col">
-                <div class="col" id="pesquisa-area">
-                    <div class="input-group mb3" id="input-pesquisa-area">
-                        <input type="text" class="form-control" placeholder="Pesquisar item"
+                <div id="pesquisa-listagem-area">
+                    <div class="col" id="pesquisa-area">
+                        <div class="input-group mb3" id="input-pesquisa-area">
+                            <input type="text" class="form-control" placeholder="Pesquisar item"
                             aria-describedby="button-search">
-                        <span class="input-group-text" id="button-search"><i class="fas fa-search"></i></span>
+                            <span class="input-group-text" id="button-search"><i class="fas fa-search"></i></span>
+                        </div>
+                        <button class="btn btn-danger" id="botao-cancelar-compra">Cancelar - Alt + 5</button>
                     </div>
-                    <button class="btn btn-danger" id="botao-cancelar-compra">Cancelar - Alt + 5</button>
+                    <div class="col" id="listagem-area">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Cód.</th>
+                                    <th scope="col">Produto</th>
+                                    <th scope="col">Preço</th>
+                                    <th scope="col">Qtde</th>
+                                    <th scope="col">Acréscimo</th>
+                                    <th scope="col">Desconto</th>
+                                    <th scope="col">Subtotal</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="corpo-tabela">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="col" id="listagem-area">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">Cód.</th>
-                                <th scope="col">Produto</th>
-                                <th scope="col">Preço</th>
-                                <th scope="col">Qtde</th>
-                                <th scope="col">Acréscimo</th>
-                                <th scope="col">Desconto</th>
-                                <th scope="col">Subtotal</th>
-                                <th scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody id="corpo-tabela">
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col" id="butoes-funcoes-area">
+                <div class="col" id="botoes-funcoes-area">
                     <button class="btn btn-primary botoes-funcoes" disabled>Ativar/Desativar Troca de Prod. <br> Alt + 2</button>
                     <button class="btn btn-primary botoes-funcoes" id="btn-alterar-item">Alterar Item (Qtde e/ou Valor) <br> Alt +3</button>
-                    <div class="modal fade" id="modalAlterarItem" data-coreui-backdrop="static"
+                    <div class="modal fade" id="modal-alterar-item" data-coreui-backdrop="static"
                         data-coreui-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
                         aria-hidden="true">
-                        <div class="modal-dialog" id="modal-descontos">
+                        <div class="modal-dialog" id="modal-alterar">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="staticBackdropLabel">Alterar Item</h5>
@@ -226,8 +214,8 @@
                     <button class="btn btn-primary botoes-funcoes" id="btn-alterar-tipo-venda">Alterar o Tipo da Venda <br> Alt + 7</button>
                     <button class="btn btn-primary botoes-funcoes" id="btn-retirar-item">Retirar Item da Venda <br> Alt
                         + 8</button>
-                    <button class="btn btn-primary botoes-funcoes" data-coreui-toggle="modal" data-coreui-target="#staticBackdrop">Descontos e Acréscimos <br> Alt + 9</button>
-                    <div class="modal fade" id="staticBackdrop" data-coreui-backdrop="static"
+                    <button class="btn btn-primary botoes-funcoes" id="btn-descontos-acrescimos">Descontos e Acréscimos <br> Alt + 9</button>
+                    <div class="modal fade" id="modal-descontos-acrescimos" data-coreui-backdrop="static"
                         data-coreui-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
                         aria-hidden="true">
                         <div class="modal-dialog" id="modal-descontos">
@@ -240,41 +228,42 @@
                                 <div class="modal-body">
                                     <div>
                                         <h5 class="titulo-desconto" >Descontos por unidade</h5>
+                                        <h3 class="titulo-desconto" >Máscara descartavel</h3>
                                         <div class="desconto-unitario-area">
                                             <div class="descontos-area">
                                                 <div class="descontos">
                                                     <div class="input-descontos-area dinheiro">
                                                         <label>Valor do Desconto R$</label>
-                                                        <input type="text" class="form-control" placeholder="0,00">
+                                                        <input type="text" class="form-control" id="input-desconto-dinheiro-unitario" placeholder="0,00">
                                                     </div>
                                                     <div class="input-descontos-area porcentagem">
                                                         <label>% Desconto</label>
-                                                        <input type="text" class="form-control" placeholder="0,00">
+                                                        <input type="text" class="form-control" id="input-desconto-porcentagem-unitario" placeholder="0,00">
                                                     </div>
                                                 </div>
                                                 <div class="acrescimos">
                                                     <div class="input-acrescimos-area dinheiro">
                                                         <label>Valor do Acréscimo R$</label>
-                                                        <input type="text" class="form-control" placeholder="0,00">
+                                                        <input type="text" class="form-control" id="input-acrescimo-dinheiro-unitario" placeholder="0,00">
                                                     </div>
                                                     <div class="input-acrescimos-area porcentagem">
                                                         <label>% Acréscimo</label>
-                                                        <input type="text" class="form-control" placeholder="0,00">
+                                                        <input type="text" class="form-control" id="input-acrescimo-porcentagem-unitario" placeholder="0,00">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="informacao-produto-desconto">
                                                 <div>
-                                                    <label>Valor do Acréscimo R$</label>
-                                                    <input type="text" class="form-control" placeholder="0,00">
+                                                    <label>Valor unitário R$</label>
+                                                    <h3 id="valor-unitario"></h3>
                                                 </div>
                                                 <div>
                                                     <label>Quantidade</label>
-                                                    <input type="text" class="form-control" placeholder="0,00">
+                                                    <h3 id="quantidade-unitaria"></h3>
                                                 </div>
                                                 <div>
                                                     <label>Valor Total R$</label>
-                                                    <input type="text" class="form-control" placeholder="0,00">
+                                                    <h3 id="valor-alterado-unitario"></h3>
                                                 </div>
                                             </div>
                                         </div>

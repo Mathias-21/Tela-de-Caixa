@@ -87,6 +87,9 @@ body {
 }
 
 #pesquisa-listagem-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   padding: 0;
 }
 
@@ -131,7 +134,7 @@ body {
   scrollbar-width: 0.5rem;
   scrollbar-color: #f0f;
   overflow-x: hidden;
-  max-height: 60vh;
+  max-height: 67vh;
 }
 
 #listagem-area::-webkit-scrollbar {
@@ -234,11 +237,17 @@ table.table.table-striped > tbody > tr > .delete-icon > i:hover {
   font-size: 1.5rem;
 }
 
-#butoes-funcoes-area {
+#pesquisa-listagem-area {
+  flex: 1;
+}
+
+#botoes-funcoes-area {
   margin: 1rem 0 1rem 1rem;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-gap: 0.3rem;
+  max-height: 8rem;
+  flex: 1;
 }
 
 .btn.btn-primary.botoes-funcoes {
