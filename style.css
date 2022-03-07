@@ -260,6 +260,11 @@ table.table.table-striped > tbody > tr > .delete-icon > i:hover {
 
 .titulo-desconto {
   text-align: center;
+  font-size: 18px;
+}
+
+#nome-item-alterar {
+  text-align: center;
 }
 
 .desconto-unitario-area,
