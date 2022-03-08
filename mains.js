@@ -453,31 +453,43 @@ const aplicarDescontosAcrescimos = () => {
     }
     // ========================================================== Desconto e Acréscimo por unidade
 
-    let valorTotalComDesconto;
-    let valorTotalComAcrescimo;
+    let valorTotalComDesconto = itemData.PRECO_PRODUTO;
+    let valorTotalComAcrescimo = itemData.ACRESCIMO_PRODUTO;
 
     inputDescontoDinheiroUnitario.addEventListener("blur", () => {
-      itemData.DESCONTO_PRODUTO = formatar(
+      // ============================ desconto
+      const descontoFormatado = formatar(
         toNumber(inputDescontoDinheiroUnitario.value)
       );
-      itemData.SUBTOTAL_PRODUTO = formatar(
+      itemData.DESCONTO_PRODUTO = descontoFormatado;
+      // ============================ subtotal
+      const subtotalFormatado = formatar(
         (toNumber(itemData.PRECO_PRODUTO) -
           toNumber(itemData.DESCONTO_PRODUTO)) *
           toNumber(itemData.QTDE_PRODUTO)
       );
-      valorTotalComDesconto = formatar(
+      itemData.SUBTOTAL_PRODUTO = subtotalFormatado;
+      // ============================ total
+      const valorTotalFormatado = formatar(
         toNumber(itemData.PRECO_PRODUTO) - toNumber(itemData.DESCONTO_PRODUTO)
       );
+      valorTotalComDesconto = valorTotalFormatado;
+      // ============================ mostrar na tela
       valorAlteradoUnitario.innerHTML = valorTotalComDesconto;
     });
     inputDescontoPorcentagemUnitario.addEventListener("blur", () => {
-      const porcentagem =
-        (Number(toNumber(valorTotalComDesconto)) / 100) *
-        inputDescontoPorcentagemUnitario.value;
-      console.log(porcentagem);
-      valorAlteradoUnitario.innerHTML = formatar(
-        Number(toNumber(valorTotalComDesconto)) - porcentagem
+      const valorDescontado = Number(toNumber(valorTotalComDesconto));
+      const inputPorcentagemValue = Number(
+        inputDescontoPorcentagemUnitario.value
       );
+      const porcentagem = inputPorcentagemValue / 100;
+      const valorDescontoPorcentagem = porcentagem * valorDescontado;
+      const somaDosDescontos = formatar(
+        Number(toNumber(itemData.DESCONTO_PRODUTO)) + valorDescontoPorcentagem
+      );
+      itemData.DESCONTO_PRODUTO = somaDosDescontos;
+      const valorTotal = formatar(valorDescontado - valorDescontoPorcentagem);
+      valorAlteradoUnitario.innerHTML = valorTotal;
     });
     inputAcrescimoDinheiroUnitario.addEventListener("blur", () => {
       itemData.ACRESCIMO_PRODUTO = formatar(
@@ -498,14 +510,11 @@ const aplicarDescontosAcrescimos = () => {
       const acrescimo =
         (Number(toNumber(valorTotalComAcrescimo)) / 100) *
         inputAcrescimoPorcentagemUnitario.value;
-      console.log(acrescimo);
       valorAlteradoUnitario.innerHTML = formatar(
         Number(toNumber(valorTotalComAcrescimo)) + acrescimo
       );
     });
-
     // ========================================================== Desconto e Acréscimo total
-
     inputDescontoDinheiroTotal.addEventListener("blur", () => {
       valorVenda = data.reduce(getSubtotal, 0);
       descontoTotal = Number(inputDescontoDinheiroTotal.value);
@@ -553,20 +562,6 @@ const aplicarDescontosAcrescimos = () => {
     });
     // ====================================== Salvar Alterações
     salvarDescontosAcrescimos.addEventListener("click", () => {
-      console.log(data);
-      if (descontoTotal === 0) {
-        descontos.innerHTML = formatar(descontoPorcentagemTotal);
-      } else {
-        descontos.innerHTML = formatar(descontoTotal);
-      }
-      if (acrescimoTotal === 0) {
-        acrescimo.innerHTML = formatar(acrescimoPorcentagemTotal);
-      } else {
-        acrescimo.innerHTML = formatar(acrescimoTotal);
-      }
-      if (valorVenda !== undefined) {
-        total.innerHTML = formatar(valorVenda);
-      }
       inputDescontoDinheiroUnitario.value = "";
       const subtotalTotal = data.reduce(getSubtotal, 0);
       const descontosTotal = data.reduce(getDescontos, 0);
