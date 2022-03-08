@@ -382,7 +382,7 @@ const inputValorAlteradoTotal = document.querySelector(
 const salvarDescontosAcrescimos = document.querySelector(
   "#salvar-descontos-acrescimos"
 );
-const valorUnitario = document.querySelector("#valor-unitario");
+// const valorUnitario = document.querySelector("#valor-unitario");
 const quantidadeUnitaria = document.querySelector("#quantidade-unitaria");
 const valorAlteradoUnitario = document.querySelector(
   "#valor-alterado-unitario"
@@ -437,7 +437,7 @@ const aplicarDescontosAcrescimos = () => {
       inputAcrescimoDinheiroUnitario.disabled = true;
       inputAcrescimoPorcentagemUnitario.disabled = true;
 
-      valorUnitario.innerHTML = "-";
+      // valorUnitario.innerHTML = "-";
       quantidadeUnitaria.innerHTML = "-";
       valorAlteradoUnitario.innerHTML = "-";
     } else if (itemSelecionado.length === 1) {
@@ -447,7 +447,7 @@ const aplicarDescontosAcrescimos = () => {
       inputAcrescimoPorcentagemUnitario.disabled = false;
 
       nomeItemAlterar.innerHTML = itemData.NOME_PRODUTO;
-      valorUnitario.innerHTML = itemData.PRECO_PRODUTO;
+      // valorUnitario.innerHTML = itemData.PRECO_PRODUTO;
       quantidadeUnitaria.innerHTML = itemData.QTDE_PRODUTO;
       valorAlteradoUnitario.innerHTML = itemData.PRECO_PRODUTO;
     }
